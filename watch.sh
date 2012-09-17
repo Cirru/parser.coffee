@@ -3,7 +3,8 @@ echo '---- start watching'
 cd `dirname $0`
 
 coffee -o lib/ -wbc src/* &
-node-dev test/test.coffee &
+cd test/
+node-dev test.coffee &
 
 read
 

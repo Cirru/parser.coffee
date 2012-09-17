@@ -12,23 +12,25 @@ test = ->
   html = (arr) ->
     a = (item) ->
       if isArr item then html item
-      else "<p>#{item.line}</p>"
+      else "<span alt='#{item.n}'>#{item.line}</span>"
     ret = arr.map(a).join('')
     "<div>#{ret}</div>"
 
   style = "
   <style>
     div {
-      box-shadow: 0px 0px 6px gray;
+      box-shadow: 0px 0px 4px hsl(0,30%,80%);
       box-sizing: border-box;
       width: 400px;
       padding: 0px 4px;
-      margin: 10px 20px;
+      margin: 4px 20px;
     }
-    p {
-      margin: 0px;
-      line-height: 30px;
+    span {
+      margin: 0px 4px;
+      padding: 0px 4px;
+      line-height: 20px;
       font-family: 'monospace';
+      background: hsl(240,90%,95%);
     }
   </style>
   <script src='http://192.168.1.117:8072/doodle.js'></script>
