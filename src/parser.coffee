@@ -1,5 +1,5 @@
 
-show = console.log
+show = ->
 isArr = Array.isArray
 err = (info) -> throw new Error info
 {inspect} = require 'util'
@@ -68,7 +68,8 @@ tokenize = (obj) ->
   str.split('').forEach (c) ->
     # show 'c:: ', c
     if isEsc
-      token += c
+      if c is 'n' then token += '\n'
+      else token += c
       isEsc = no
     else
       if c is esc

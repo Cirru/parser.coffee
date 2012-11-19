@@ -1,20 +1,3 @@
+#!/usr/bin/env node
 
-f p
-  f p p space\ inside
-    f \(parenthese\)\ available
-
-  p f
-        f f (sdf (d) )
-        sdfsd\(fsdf
-      dd
-    p
-f
-
-let*
-  yin
-    lambda (foo) (newline) foo
-    call/cc (lambda (bar) bar)
-  yang
-    lambda (foo) (write-char #\*) foo
-    call/cc (lambda (bar) bar)
-yin yang
+print a

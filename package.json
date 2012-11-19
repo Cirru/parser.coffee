@@ -1,17 +1,17 @@
 {
   "name": "cirru-parser",
   "version": "0.0.0",
-  "description": "a parser attempt",
-  "main": "index.js",
+  "description": "the parser of Cirru",
+  "main": "lib/parser.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "coffee test/test.coffee"
   },
-  "repository": "",
+  "repository": "https://github.com/jiyinyiyong/cirru-parser",
   "keywords": [
-    "parser"
+    "parser", "cirru"
   ],
   "author": "jiyinyiyong",
   "license": "MIT"

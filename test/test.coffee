@@ -33,7 +33,8 @@ test = ->
       background: hsl(240,90%,95%);
     }
   </style>
-  <script src='http://192.168.1.117:8072/doodle.js'></script>
+  <script src='http://192.168.1.101:7777/doodle.js'></script>
+  <pre>
   "
 
   content = style + (html ret)
