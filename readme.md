@@ -40,7 +40,7 @@ data
      '    x y',
      '  x y',
      '  z' ],
-  ast: 
+  tree: 
    [ [ 'print', [Object], line: 1 ],
      [ line: 2 ],
      [ 'print', [Object], line: 3 ],

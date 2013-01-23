@@ -75,4 +75,4 @@ exports.parse = parse = (content) ->
   # log 'table', table
   ret =
     code: lines
-    ast: nest_table table
+    tree: nest_table table
