@@ -1,0 +1,24 @@
+{
+  "name": "cirru-parser",
+  "version": "0.0.1",
+  "description": "a parser for Cirru language",
+  "main": "lib/parser.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "node lib/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jiyinyiyong/cirru-parser.git"
+  },
+  "keywords": [
+    "cirru",
+    "parser"
+  ],
+  "author": "jiyinyiyong",
+  "license": "MIT",
+  "readmeFilename": "readme.md",
+  "gitHead": "0067d4545f517ac18cd072bb77c70dcc550784e4"
+}
