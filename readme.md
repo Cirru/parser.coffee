@@ -23,7 +23,7 @@ data
   z
 ```
 
-```json
+```
 { code: 
    [ 'print (string (hell]"o) world)',
      '',
