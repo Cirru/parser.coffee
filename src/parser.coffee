@@ -75,8 +75,8 @@ code_line = (list) -> list.length > 0
 content_line = (line) -> line.trim().length > 0
 
 exports.parse = parse = (content) ->
-  lines = content.split('\n').filter content_line
-  table = lines.reduce gen_table, []
+  lines = content.split '\n'
+  table = lines.filter(content_line).reduce gen_table, []
   # log 'table', table
   res = nest_table table
   ret =
