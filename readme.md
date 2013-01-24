@@ -15,7 +15,7 @@ print (a b (c d e))
   wait
 ```
 
-``json
+```json
 [
   [
     "print",
