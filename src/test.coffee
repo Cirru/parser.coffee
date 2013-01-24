@@ -6,6 +6,10 @@ fs = require 'fs'
 
 draw = (json) -> JSON.stringify json, null, 2
 
-file = fs.readFileSync '../example/code.cr', 'utf8'
+test_file = '../example/code.cr'
 
-log 'result:', (draw (parse file).ast)
+do display = ->
+  file = fs.readFileSync test_file, 'utf8'
+  log 'result:', (draw (parse file).tree)
+
+fs.watchFile test_file, interval: 100, display

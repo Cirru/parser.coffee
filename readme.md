@@ -6,48 +6,60 @@ I played some tricks, it's not a complele parser.
 But you can read this to suppose how it works.  
 
 ```
-print (string (hell]"o) world)
+print (a b (c d e))
+  more indeint
+          nest
+        ok
+    fine
+    func more
+  wait
+```
 
-print
-  string hello world
-
-data
-  a b
-    a b
-      b b
-
-data
-      bet ok
-    x y
-  x y
-  z
+``json
+[
+  [
+    "print",
+    [
+      "a",
+      "b",
+      [
+        "c",
+        "d",
+        "e"
+      ]
+    ],
+    [
+      "more",
+      "indeint",
+      [
+        [
+          [
+            "nest"
+          ],
+          "ok"
+        ]
+      ],
+      "fine",
+      [
+        "func",
+        "more"
+      ]
+    ],
+    "wait"
+  ]
+]
 ```
 
 ```
-{ code: 
-   [ 'print (string (hell]"o) world)',
-     '',
-     'print',
-     '  string hello world',
-     '',
-     'data',
-     '  a b',
-     '    a b',
-     '      b b',
-     '',
-     'data',
-     '      bet ok',
-     '    x y',
-     '  x y',
-     '  z' ],
-  tree: 
-   [ [ 'print', [Object], line: 1 ],
-     [ line: 2 ],
-     [ 'print', [Object], line: 3 ],
-     [ line: 5 ],
-     [ 'data', [Object], line: 6 ],
-     [ line: 10 ],
-     [ 'data', [Object], [Object], [Object], line: 11 ] ] }
+result: { code: 
+   [ 'print (a b (c d e))',
+     '  more indeint',
+     '          nest',
+     '        ok',
+     '    fine',
+     '    func more',
+     '  wait' ],
+  tree: [ [ 'print', [Object], [Object], 'wait', line: 1 ] ] }
 ```
 
 ### Cirru's syntax

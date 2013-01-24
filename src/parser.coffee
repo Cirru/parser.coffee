@@ -55,6 +55,8 @@ nest_in = (list, item) ->
   # log 'prev', list
   if item.indent is 0
     delete item.indent
+    if item.length is 1
+      item = item[0]
     list.push item
     # log 'list', list
   else
@@ -69,10 +71,14 @@ nest_table = (table) ->
   table.forEach (line) -> nest_in ret, line
   ret
 
+code_line = (list) -> list.length > 0
+content_line = (line) -> line.trim().length > 0
+
 exports.parse = parse = (content) ->
-  lines = content.split '\n'
+  lines = content.split('\n').filter content_line
   table = lines.reduce gen_table, []
   # log 'table', table
+  res = nest_table table
   ret =
     code: lines
-    tree: nest_table table
+    tree: res.filter(code_line)
