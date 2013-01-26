@@ -6,3 +6,9 @@ print (a b (c d e))
     fine
     func more
   wait
+
+table
+  a b
+
+  table
+    a b

@@ -16,7 +16,7 @@ print (a b (c d e))
 ```
 
 ```json
-[
+result: [
   [
     "print",
     [
@@ -34,32 +34,54 @@ print (a b (c d e))
       [
         [
           [
-            "nest"
+            [
+              "nest"
+            ]
           ],
-          "ok"
+          [
+            "ok"
+          ]
         ]
       ],
-      "fine",
+      [
+        "fine"
+      ],
       [
         "func",
         "more"
       ]
     ],
-    "wait"
+    [
+      "wait"
+    ]
+  ],
+  [
+    "table",
+    [
+      "a",
+      "b"
+    ],
+    [
+      "table",
+      [
+        "a",
+        "b"
+      ]
+    ]
   ]
 ]
 ```
 
 ```
-result: { code: 
-   [ 'print (a b (c d e))',
-     '  more indeint',
-     '          nest',
-     '        ok',
-     '    fine',
-     '    func more',
-     '  wait' ],
-  tree: [ [ 'print', [Object], [Object], 'wait', line: 1 ] ] }
+[ [ 'print',
+    [ 'a', 'b', [Object], line: 1 ],
+    [ 'more', 'indeint', [Object], [Object], [Object], line: 2 ],
+    [ 'wait', line: 7 ],
+    line: 1 ],
+  [ 'table',
+    [ 'a', 'b', line: 9 ],
+    [ 'table', [Object], line: 10 ],
+    line: 8 ] ]
 ```
 
 ### Cirru's syntax

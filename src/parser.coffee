@@ -51,24 +51,22 @@ gen_table = (prev, curr, index) ->
   prev.push res
   prev
 
-nest_in = (list, item) ->
+nest_in = (list, item, level) ->
   # log 'prev', list
   if item.indent is 0
     delete item.indent
-    if item.length is 1
-      item = item[0]
     list.push item
     # log 'list', list
   else
     unless list.last? and (arr$ list.last)
       list.push []
     item.indent -= 1
-    nest_in list.last, item
+    nest_in list.last, item, (level + 1)
 
 nest_table = (table) ->
   ret = []
   current_line = 0
-  table.forEach (line) -> nest_in ret, line
+  table.forEach (line) -> nest_in ret, line, 0
   ret
 
 code_line = (list) -> list.length > 0
