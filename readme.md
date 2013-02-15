@@ -1,97 +1,88 @@
 ## Cirru-parser
 
-### Intro
+#### Example
 
-I played some tricks, it's not a complele parser.  
-But you can read this to suppose how it works.  
+For code like:
 
 ```
-print (a b (c d e))
-  more indeint
-          nest
-        ok
-    fine
-    func more
-  wait
+set a 1
+set b (string a)
+
+print
+  eval (read a)
+
+let
+    a 1
+    b 2
+
+  print a b
 ```
+
+Parsing result will be:
 
 ```json
-result: [
+[
   [
-    "print",
+    "set",
+    "a",
+    "1"
+  ],
+  [
+    "set",
+    "b",
     [
-      "a",
-      "b",
-      [
-        "c",
-        "d",
-        "e"
-      ]
-    ],
-    [
-      "more",
-      "indeint",
-      [
-        [
-          [
-            [
-              "nest"
-            ]
-          ],
-          [
-            "ok"
-          ]
-        ]
-      ],
-      [
-        "fine"
-      ],
-      [
-        "func",
-        "more"
-      ]
-    ],
-    [
-      "wait"
+      "string",
+      "a"
     ]
   ],
   [
-    "table",
+    "print",
     [
-      "a",
-      "b"
-    ],
+      "eval",
+      [
+        "read",
+        "a"
+      ]
+    ]
+  ],
+  [
+    "let",
     [
-      "table",
       [
         "a",
-        "b"
+        "1"
+      ],
+      [
+        "b",
+        "2"
       ]
+    ],
+    [
+      "print",
+      "a",
+      "b"
     ]
   ]
 ]
-```
 
-```
-[ [ 'print',
-    [ 'a', 'b', [Object], line: 1 ],
-    [ 'more', 'indeint', [Object], [Object], [Object], line: 2 ],
-    [ 'wait', line: 7 ],
-    line: 1 ],
-  [ 'table',
-    [ 'a', 'b', line: 9 ],
-    [ 'table', [Object], line: 10 ],
-    line: 8 ] ]
 ```
 
 ### Cirru's syntax
 
-* parentheses, indentations, whitespaces are the rules  
+* parentheses, indentations, whitespaces consists the rules  
 * its syntax tree is merely a list of lists and strings  
-* it's a simplest, indetation-sensitive syntax
+* it's a simplest, indetation-sensitive syntax  
 
 ### Usage
 
 ```
 npm install cirru-parser
+```
+
+Import it in Node, an example in CoffeeScript:  
+
+```coffee
+parse = require("cirru-parser").parse
+parse "print\n  string a"
+# [ [ 'print', [ 'string', 'a' ] ] ]
 ```
