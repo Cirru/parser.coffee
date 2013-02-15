@@ -1,14 +1,12 @@
 
-print (a b (c d e))
-  more indeint
-          nest
-        ok
-    fine
-    func more
-  wait
+set a 1
+set b (string a)
 
-table
-  a b
+print
+  eval (read a)
 
-  table
-    a b
+let
+    a 1
+    b 2
+
+  print a b

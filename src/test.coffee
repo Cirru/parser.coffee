@@ -10,7 +10,7 @@ test_file = '../example/code.cr'
 
 do display = ->
   file = fs.readFileSync test_file, 'utf8'
-  log 'result:', (draw (parse file).tree)
-  log 'all:', (parse file).tree
+  tree = parse file
+  log (draw tree)
 
 fs.watchFile test_file, interval: 100, display

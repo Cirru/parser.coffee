@@ -1,11 +1,8 @@
 {
   "name": "cirru-parser",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "a parser for Cirru language",
   "main": "lib/parser.js",
-  "directories": {
-    "example": "example"
-  },
   "scripts": {
     "test": "node lib/test.js"
   },
@@ -20,5 +17,7 @@
   "author": "jiyinyiyong",
   "license": "MIT",
   "readmeFilename": "readme.md",
-  "gitHead": "0067d4545f517ac18cd072bb77c70dcc550784e4"
+  "dependencies": {
+    "she": "*"
+  }
 }
