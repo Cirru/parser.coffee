@@ -9,10 +9,10 @@ arr$ = Array.isArray
 obj$ = (x) -> (not (arr$ x)) and (typeof x is 'object')
 num$ = (x) -> not (Number.isNaN x)
 
-{convert} = require "she"
+{wrap} = require "./wrap"
 
-exports.parse = (content) ->
-  source = (convert content).split ""
+exports.build = (content) ->
+  source = content.split ""
 
   list = []
   buffer = ""
@@ -52,3 +52,6 @@ exports.parse = (content) ->
     self
 
   tree
+
+exports.parse = (content) ->
+  exports.build (wrap content)
