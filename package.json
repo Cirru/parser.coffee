@@ -1,10 +1,10 @@
 {
   "name": "cirru-parser",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "a parser for Cirru language",
   "main": "lib/index.js",
   "scripts": {
-    "test": "coffee lib/test.coffee"
+    "test": "echo 'no test found'"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,8 @@
   ],
   "author": "jiyinyiyong",
   "license": "MIT",
-  "readmeFilename": "readme.md"
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "calabash": "0.0.4"
+  }
 }
