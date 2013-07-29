@@ -19,5 +19,8 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "calabash": "0.0.4"
+  },
+  "dependencies": {
+    "coffee-pattern": "0.0.2"
   }
 }
