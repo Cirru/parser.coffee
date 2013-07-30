@@ -2,8 +2,7 @@
 fs = require 'fs'
 path = require 'path'
 {match} = require 'coffee-pattern'
-
-require './rewrite'
+{List} = require './list'
 
 parse = (status, ast, text) ->
   match text,
