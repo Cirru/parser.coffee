@@ -1,7 +1,12 @@
 
+{type} = require './util'
+
 class List
   constructor: (@data) ->
-    unless (typeof @data) is 'string'
+    # console.log (type @data)
+    if (type @data) is 'string'
+      @data = @data.split ''
+    else unless (type @data) is 'array'
       throw new Error "wrong usage of List with `#{data}`"
 
 List::__defineGetter__ 'head', -> @data[0]
