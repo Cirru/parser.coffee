@@ -21,6 +21,6 @@
     "calabash": "0.0.4"
   },
   "dependencies": {
-    "coffee-pattern": "0.0.2"
+    "coffee-pattern": "0.0.6"
   }
 }
