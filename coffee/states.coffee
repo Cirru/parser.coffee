@@ -57,7 +57,6 @@ class Indent
   skip: ->
     @buffer = 0
   read: ->
-    console.log @level, @buffer
     diff = @buffer - @level
     [@level, @buffer] = [@buffer, 0]
     if Math.abs(diff % 2) is 1

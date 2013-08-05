@@ -20,7 +20,9 @@ tokenize = (text) ->
     normal_pattern = -> match char,
       '"': -> pushStack name: 'quote'
       ' ': -> # no state changes
-      '\n': -> pushStack name: 'indent'
+      '\n': ->
+        if buffer.text? then pushTokens text: buffer.out()
+        pushStack name: 'indent'
       '(': ->
         pushStack name: 'bracket'
         pushTokens bracket: 'more'
@@ -69,8 +71,8 @@ tokenize = (text) ->
             dedent: ->
               [1..step.step].map -> pushTokens indent: 'less'
               pushStack name: 'line'
-            undefined: -> # nothing
-
+            undefined: ->
+              pushStack name: 'line'
           do normal_pattern
     match char,
       '\n': -> caret.newline()
