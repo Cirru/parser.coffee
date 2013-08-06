@@ -91,3 +91,6 @@ exports.protos =
       @entry.push new_entry
     ease: ->
       @entry.pop()
+    newline: ->
+      @ease()
+      @nest()

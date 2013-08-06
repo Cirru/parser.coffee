@@ -21,6 +21,7 @@
     "calabash": "0.0.4"
   },
   "dependencies": {
-    "coffee-pattern": "0.0.6"
+    "coffee-pattern": "0.0.6",
+    "prettyjson": "~0.8.1"
   }
 }

@@ -2,61 +2,63 @@
 fs = require 'fs'
 path = require 'path'
 {match} = require 'coffee-pattern'
-{type} = require './util'
-{Caret, Buffer, Stack, Indent} = require './states'
-print = (args...) -> console.log args...
+{type, render, stringify} = require './util'
+{protos} = require './states'
+prettyjson = require 'prettyjson'
 
-tokenize = (text) ->
-  caret = new Caret
-  buffer = new Buffer
-  stack = new Stack
-  indent = new Indent
-  tokens = []
+parse = (text) ->
+  caret = protos.caret.new()
+  buffer = protos.buffer.new()
+  stack = protos.stack.new()
+  indent = protos.indent.new()
+  ast = protos.ast.new()
 
   pushStack = (object) -> stack.push (caret.wrap object)
-  pushTokens = (object) -> tokens.push (caret.wrap object)
+  clear_buffer = ->
+    if buffer.text? then ast.push buffer.out()
+
+  ast.nest()
 
   text.split('').forEach (char) ->
+
     normal_pattern = -> match char,
       '"': -> pushStack name: 'quote'
-      ' ': -> # no state changes
+      ' ': ->
       '\n': ->
-        if buffer.text? then pushTokens text: buffer.out()
+        clear_buffer()
         pushStack name: 'indent'
       '(': ->
-        pushStack name: 'bracket'
-        pushTokens bracket: 'more'
-        match buffer.text?,
-          yes, -> pushTokens text: buffer.out()
+        clear_buffer()
+        ast.nest()
       undefined, -> 
         pushStack name: 'buffer'
         buffer.add char
-    console.log ':::', stack.now, char
+
     match stack.now,
       empty: normal_pattern
-      bracket: normal_pattern
-      line: normal_pattern
       buffer: -> match char,
         ' ': ->
-          pushTokens text: buffer.out()
+          clear_buffer()
           stack.pop()
         '\n': ->
-          pushTokens text: buffer.out()
+          clear_buffer()
           pushStack name: 'indent'
         ')': ->
-          pushTokens text: buffer.out()
-          pushTokens bracket: 'less'
+          clear_buffer()
+          ast.ease()
           stack.pop()
         undefined, ->
           buffer.add char
-      escape: -> buffer.add char
+      escape: ->
+        buffer.add char
+        stack.pop()
       quote: -> match char,
         '\\': -> pushStack name: 'escape'
         '"': ->
-          pushTokens text: buffer.out()
+          clear_buffer()
           stack.pop()
-        undefined, ->
-          buffer.add char
+        '\n': -> throw new Error 'quote not closed'
+        undefined, -> buffer.add char
       indent: -> match char,
         ' ': ->
           indent.count()
@@ -66,27 +68,25 @@ tokenize = (text) ->
           step = indent.read()
           match step.type,
             indent: ->
-              [1..step.step].map -> pushTokens indent: 'more'
-              pushStack name: 'line'
+              [1..step.step].map -> ast.nest()
             dedent: ->
-              [1..step.step].map -> pushTokens indent: 'less'
-              pushStack name: 'line'
-            undefined: ->
-              pushStack name: 'line'
+              [1..step.step].map -> ast.ease()
+              ast.newline()
+            plain: ->
+              ast.newline()
+          stack.pop()
           do normal_pattern
     match char,
       '\n': -> caret.newline()
       undefined, -> caret.forward()
-  tokens
-
-parse = (tokens) ->
-  tokens
+  if buffer.text? then clear_buffer()
+  ast.tree
 
 wrap_parse = (filename) ->
   fullpath = path.join process.env.PWD, "./test/#{filename}"
   text = fs.readFileSync fullpath, 'utf8'
 
   path: fullpath
-  ast: parse tokenize text
+  ast: parse text
 
 exports.parse = wrap_parse
