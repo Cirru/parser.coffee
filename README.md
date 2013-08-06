@@ -37,7 +37,8 @@ to
 
 * Double quote and escape
 
-String wrapped with `"`. Single quote is only text.
+Strings are wrapped in `"`s.
+Meanwhile single quotes are regarded as plain text.
 
 ```
 
@@ -103,9 +104,9 @@ to
 ]
 ```
 
-### Folding indetation
+### Folding indentation
 
-`$` is used in reducing indetations:
+`$` is used in reducing indentations:
 
 ```
 a $
@@ -159,7 +160,7 @@ to
 
 ### A glance of Cirru
 
-With the syntaxes described above, I got Cirru:
+Combine the syntax rules above:
 
 ```
 
@@ -268,12 +269,15 @@ to
 ]
 ```
 
+* Code is data
+
+In Cirru, variables are strings, so the parse doesn't have to tell.
 
 ### Known issue
 
-* `[]` generated when first line empty.
-* No detailed error messages
-* Not well tested or reviewed
+* `[]` generated unexpectedly when first line empty
+* No detailed error messages when syntax gets wrong
+* Not well tested or reviewed, not available to use now
 
 ### License
 
