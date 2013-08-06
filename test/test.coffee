@@ -5,7 +5,7 @@ path = require 'path'
 fs = require 'fs'
 stringify = (data) -> JSON.stringify data, null, 2
 
-code_file = './piece.cr'
+code_file = './code.cr'
 code_path = path.join __dirname, code_file
 
 console.log code_path

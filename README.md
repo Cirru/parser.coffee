@@ -35,6 +35,45 @@ to
 ]
 ```
 
+* Parentheses
+
+Parentheses create nesting blocks.
+But each open bracket its close bracket should be kept in the same line.
+
+```
+3 4 (1) 4
+
+((((1))))
+
+x
+```
+```json
+[
+  [
+    "3",
+    "4",
+    [
+      "1"
+    ],
+    "4"
+  ],
+  [
+    [
+      [
+        [
+          [
+            "1"
+          ]
+        ]
+      ]
+    ]
+  ],
+  [
+    "x"
+  ]
+]
+```
+
 * Double quote and escape
 
 Strings are wrapped in `"`s.
@@ -104,7 +143,7 @@ to
 ]
 ```
 
-### Folding indentation
+### Folding indentations
 
 `$` is used in reducing indentations:
 

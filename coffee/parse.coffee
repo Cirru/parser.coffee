@@ -36,6 +36,9 @@ parse = (text) ->
       '(': ->
         clear_buffer()
         ast.nest()
+      ')': ->
+        clear_buffer()
+        ast.ease()
       undefined, -> 
         pushStack name: 'buffer'
         buffer.add char
