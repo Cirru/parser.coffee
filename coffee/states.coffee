@@ -55,12 +55,6 @@ exports.protos =
     init: ->
       @level = 0
       @buffer = 0
-    indent: ->
-      @level += 1
-    dedent: ->
-      @level -= 1
-      if @level < 0
-        throw new Error 'indentation is not <0'
     count: ->
       @buffer += 1
     skip: ->
@@ -92,5 +86,22 @@ exports.protos =
     ease: ->
       @entry.pop()
     newline: ->
-      @ease()
-      @nest()
+      if @tree.length > 1 # prevent the first empty array
+        @ease()
+        @nest()
+
+  folding: proto.new
+    init: ->
+      @stack = []
+      @exists = no
+      @level = 0
+    add: (object) ->
+      @stack.push object
+      @level = object.level
+      @exists = yes
+    pop: ->
+      object = @stack.pop()
+      @exists = (@stack.length > 0)
+      if @stack[0]?
+        @level = @stack[@stack.length - 1].level
+      object

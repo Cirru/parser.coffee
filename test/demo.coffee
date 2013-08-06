@@ -5,4 +5,4 @@ stringify = (data) -> JSON.stringify data, null, 2
 
 demo_file = './code.cr'
 
-console.log stringify parse(demo_file).ast
+console.log render parse(demo_file).ast

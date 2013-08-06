@@ -12,10 +12,13 @@ parse = (text) ->
   stack = protos.stack.new()
   indent = protos.indent.new()
   ast = protos.ast.new()
+  folding = protos.folding.new()
 
   pushStack = (object) -> stack.push (caret.wrap object)
   clear_buffer = ->
-    if buffer.text? then ast.push buffer.out()
+    if buffer.text? then ast.push buffer.out() # debug mode
+    # if buffer.text? then ast.push (caret.wrap text: buffer.out())
+    if stack.now is 'buffer' then stack.pop()
 
   ast.nest()
 
@@ -24,6 +27,9 @@ parse = (text) ->
     normal_pattern = -> match char,
       '"': -> pushStack name: 'quote'
       ' ': ->
+      $: -> # when `$` occurs, fold the code
+        ast.nest()
+        folding.add (caret.wrap level: indent.level)
       '\n': ->
         clear_buffer()
         pushStack name: 'indent'
@@ -66,6 +72,11 @@ parse = (text) ->
           indent.skip()
         undefined, ->
           step = indent.read()
+          do pop_folding = -> # handle `$`, when `$` ends
+            if folding.exists and (indent.level <= folding.level)
+              out = folding.pop()
+              ast.ease()
+              pop_folding()
           match step.type,
             indent: ->
               [1..step.step].map -> ast.nest()
@@ -80,6 +91,9 @@ parse = (text) ->
       '\n': -> caret.newline()
       undefined, -> caret.forward()
   if buffer.text? then clear_buffer()
+  while folding.exists
+    folding.pop()
+    ast.ease()
   ast.tree
 
 wrap_parse = (filename) ->
@@ -88,5 +102,6 @@ wrap_parse = (filename) ->
 
   path: fullpath
   ast: parse text
+  script: text.split('\n')
 
 exports.parse = wrap_parse
