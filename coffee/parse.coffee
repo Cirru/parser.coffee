@@ -16,8 +16,8 @@ parse = (text) ->
 
   pushStack = (object) -> stack.push (caret.wrap object)
   clear_buffer = ->
-    if buffer.text? then ast.push buffer.out() # debug mode
-    # if buffer.text? then ast.push (caret.wrap text: buffer.out())
+    # if buffer.text? then ast.push buffer.out() # debug mode
+    if buffer.text? then ast.push (caret.wrap text: buffer.out())
     if stack.now is 'buffer' then stack.pop()
 
   ast.nest()

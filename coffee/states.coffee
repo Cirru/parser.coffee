@@ -86,9 +86,8 @@ exports.protos =
     ease: ->
       @entry.pop()
     newline: ->
-      if @tree.length > 1 # prevent the first empty array
-        @ease()
-        @nest()
+      @ease()
+      @nest()
 
   folding: proto.new
     init: ->
