@@ -14,25 +14,27 @@ parse = (text) ->
   ast = protos.ast.new()
   folding = protos.folding.new()
 
-  pushStack = (object) -> stack.push (caret.wrap object)
+  pushStack = (object) -> stack.push name: (caret.wrap object)
   clear_buffer = ->
-    # if buffer.text? then ast.push buffer.out() # debug mode
-    if buffer.text? then ast.push (caret.wrap text: buffer.out())
+    if buffer.text? then ast.push buffer.out() # debug mode
+    # if buffer.text? then ast.push (caret.wrap text: buffer.out())
     if stack.now is 'buffer' then stack.pop()
+  put_error = (name) ->
+    ast.tree.error = error_message (caret.wrap text: name), text
 
   ast.nest()
 
   text.split('').forEach (char) ->
 
     normal_pattern = -> match char,
-      '"': -> pushStack name: 'quote'
+      '"': -> pushStack 'quote'
       ' ': ->
       $: -> # when `$` occurs, fold the code
         ast.nest()
         folding.add (caret.wrap level: indent.level)
       '\n': ->
         clear_buffer()
-        pushStack name: 'indent'
+        pushStack 'indent'
       '(': ->
         clear_buffer()
         ast.nest()
@@ -40,7 +42,7 @@ parse = (text) ->
         clear_buffer()
         ast.ease()
       undefined, -> 
-        pushStack name: 'buffer'
+        pushStack 'buffer'
         buffer.add char
 
     match stack.now,
@@ -51,7 +53,7 @@ parse = (text) ->
           stack.pop()
         '\n': ->
           clear_buffer()
-          pushStack name: 'indent'
+          pushStack 'indent'
         ')': ->
           clear_buffer()
           ast.ease()
@@ -62,11 +64,11 @@ parse = (text) ->
         buffer.add char
         stack.pop()
       quote: -> match char,
-        '\\': -> pushStack name: 'escape'
+        '\\': -> pushStack 'escape'
         '"': ->
           clear_buffer()
           stack.pop()
-        '\n': -> throw new Error 'quote not closed'
+        '\n': -> put_error 'quote not closed'
         undefined, -> buffer.add char
       indent: -> match char,
         ' ': ->
@@ -97,6 +99,7 @@ parse = (text) ->
   while folding.exists
     folding.pop()
     ast.ease()
+  if stack.now is 'quote' then put_error 'quote at end'
   ast.tree
 
 wrap_parse = (filename) ->
@@ -108,3 +111,17 @@ wrap_parse = (filename) ->
   script: text.split('\n')
 
 exports.parse = wrap_parse
+
+repeat = (char, n) -> [1..n].map(-> char).join('')
+
+error_message = (error, text) ->
+  info = []
+  lines = text.split('\n')
+  info.push ''
+  info.push lines[error.y]
+  cursor = repeat '~', error.x
+  if cursor.length > 0 then cursor = cursor[...-1] + '^'
+  cursor += '~~~~~'
+  info.push cursor
+  info.push "@ line #{error.y + 1}: #{error.text}"
+  info.join '\n'

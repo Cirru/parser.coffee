@@ -312,6 +312,18 @@ to
 
 In Cirru, variables are strings, so the parse doesn't have to tell.
 
+### Error messages
+
+* Quote not closed
+
+This could occur when `"` is not closed at line end, or file end:
+
+```
+1 "3
+~~~^~~~~~
+@ line 2: quote at end
+```
+
 ### Known issue
 
 * `[]` generated unexpectedly when first line empty
