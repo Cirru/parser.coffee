@@ -13,14 +13,21 @@ parse = (text) ->
   indent = protos.indent.new()
   ast = protos.ast.new()
   folding = protos.folding.new()
+  brackets = protos.brackets.new()
 
   pushStack = (object) -> stack.push name: (caret.wrap object)
   clear_buffer = ->
-    if buffer.text? then ast.push buffer.out() # debug mode
-    # if buffer.text? then ast.push (caret.wrap text: buffer.out())
+    # if buffer.text? then ast.push buffer.out() # debug mode
+    if buffer.text? then ast.push (caret.wrap text: buffer.out())
     if stack.now is 'buffer' then stack.pop()
   put_error = (name) ->
-    ast.tree.error = error_message (caret.wrap text: name), text
+    ast.errors.push error_message (caret.wrap text: name), text
+  check_bracket = ->
+    if brackets.count > 0
+      put_error 'bracket not closed'
+    else if brackets.count < 0
+      put_error 'too many close bracket'
+    brackets.end()
 
   ast.nest()
 
@@ -35,12 +42,15 @@ parse = (text) ->
       '\n': ->
         clear_buffer()
         pushStack 'indent'
+        check_bracket()
       '(': ->
         clear_buffer()
         ast.nest()
+        brackets.add()
       ')': ->
         clear_buffer()
         ast.ease()
+        brackets.pop()
       undefined, -> 
         pushStack 'buffer'
         buffer.add char
@@ -54,10 +64,12 @@ parse = (text) ->
         '\n': ->
           clear_buffer()
           pushStack 'indent'
+          check_bracket()
         ')': ->
           clear_buffer()
           ast.ease()
           stack.pop()
+          brackets.pop()
         undefined, ->
           buffer.add char
       escape: ->
@@ -100,7 +112,8 @@ parse = (text) ->
     folding.pop()
     ast.ease()
   if stack.now is 'quote' then put_error 'quote at end'
-  ast.tree
+  check_bracket()
+  ast
 
 wrap_parse = (filename) ->
   fullpath = path.join process.env.PWD, "./test/#{filename}"

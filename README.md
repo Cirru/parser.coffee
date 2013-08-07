@@ -2,6 +2,17 @@
 Cirru Parser
 ------
 
+### Usage
+
+```
+npm install --save cirru-parser
+```
+``` coffee
+ast = require('cirru-parser').parse('file_path').ast
+# ast.tree
+# ast.errors
+```
+
 ### Syntax
 
 * Lines
@@ -316,12 +327,28 @@ In Cirru, variables are strings, so the parse doesn't have to tell.
 
 * Quote not closed
 
-This could occur when `"` is not closed at line end, or file end:
+This could occur when `"` is not closed at line end, or file end.
+
+* Bracket not match
+
+When too many `)` or too many `(` appears, it gives errors.
+
+* demo here:
 
 ```
-1 "3
+1 (3
+
+"ddd
+```
+has errors:
+```
+1 (3
 ~~~^~~~~~
-@ line 2: quote at end
+@ line 2: bracket not closed
+
+"ddd
+~~~^~~~~~
+@ line 4: quote at end
 ```
 
 ### Known issue

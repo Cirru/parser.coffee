@@ -3,7 +3,8 @@ proto =
   new: (object) ->
     child = {}
     child.__proto__ = @
-    child[key] = value for key, value of object
+    for key, value of object
+      child[key] = value
     child.init?()
     child
 
@@ -77,6 +78,7 @@ exports.protos =
     init: ->
       @tree = []
       @entry = [@tree]
+      @errors = []
     push: (data) ->
       @entry[@entry.length - 1].push data
     nest: ->
@@ -104,3 +106,15 @@ exports.protos =
       if @stack[0]?
         @level = @stack[@stack.length - 1].level
       object
+
+  brackets: proto.new
+    init: ->
+      @count = 0
+    add: ->
+      @count += 1
+    pop: ->
+      @count -= 1
+    end: ->
+      count = @count
+      @count = 0
+      count
