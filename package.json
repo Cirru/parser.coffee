@@ -1,8 +1,8 @@
 {
   "name": "cirru-parser",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "a parser for Cirru language",
-  "main": "lib/parser.js",
+  "main": "lib/parse.js",
   "scripts": {
     "test": "node-dev dev.coffee"
   },
@@ -18,10 +18,11 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "calabash": "0.0.4"
+    "calabash": "0.0.4",
+    "prettyjson": "~0.8.1"
   },
   "dependencies": {
     "coffee-pattern": "0.0.6",
-    "prettyjson": "~0.8.1"
+    "calabash": "~0.1.0"
   }
 }

@@ -122,6 +122,7 @@ wrap_parse = (filename) ->
   path: fullpath
   ast: parse text
   script: text.split('\n')
+  error: (error) -> error_message error, text
 
 exports.parse = wrap_parse
 

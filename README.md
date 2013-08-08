@@ -8,9 +8,10 @@ Cirru Parser
 npm install --save cirru-parser
 ```
 ``` coffee
-ast = require('cirru-parser').parse('file_path').ast
-# ast.tree
-# ast.errors
+ret = require('cirru-parser').parse('file_path').ast
+# ret.ast.tree # AST tree
+# ret.ast.errors # array of errors if there are
+# ret.error # an API for putting errors
 ```
 
 ### Syntax
@@ -321,7 +322,7 @@ to
 
 * Code is data
 
-In Cirru, variables are strings, so the parse doesn't have to tell.
+In Cirru, variables are strings, so the parser doesn't have to tell.
 
 ### Error messages
 
