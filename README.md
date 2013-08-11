@@ -8,9 +8,10 @@ Cirru Parser
 npm install --save cirru-parser
 ```
 ``` coffee
-ret = require('cirru-parser').parse('file_path').ast
-ret.ast.tree # AST tree
-ret.ast.errors # array of errors if there are
+{parse, error} = require 'cirru-parser'
+ast = parse './file_path.cr'
+ast.tree # AST tree, always has, check ast.errors first
+ast.errors # array of errors if there are, or `[]` by default
 
 options =
   text: 'demo of token'
@@ -19,7 +20,7 @@ options =
   file:
     text: 'content of file'
     path: 'relative path of file'
- ret.error options # an API for putting errors
+ error options # an API for putting errors
 ```
 
 ### Syntax
@@ -357,26 +358,36 @@ When too many `)` or too many `(` appears, it gives errors.
 * demo here:
 
 ```
+
 1 (3
+
+2)
 
 "ddd
 ```
 has errors:
 ```
-1 (3
-~~~^~~~~~
-@ line 2: bracket not closed
 
+✗ ./test/piece.cr: 2
+1 (3
+   ^ bracket not closed
+
+
+✗ ./test/piece.cr: 4
+2)
+ ^ too many close bracket
+
+
+✗ ./test/piece.cr: 6
 "ddd
-~~~^~~~~~
-@ line 4: quote at end
+   ^ quote at end
+
 ```
 
 ### Known issue
 
 * `[]` generated unexpectedly when first line empty
-* No detailed error messages when syntax gets wrong
-* Not well tested or reviewed, not available to use now
+* Reviewed but not well tested
 
 ### License
 

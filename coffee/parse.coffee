@@ -81,7 +81,10 @@ parse = (file) ->
         '"': ->
           clear_buffer()
           stack.pop()
-        '\n': -> put_error 'quote not closed'
+        '\n': ->
+          put_error 'quote not closed'
+          clear_buffer()
+          stack.pop()
         undefined, -> buffer.add char
       indent: -> match char,
         ' ': ->
@@ -122,21 +125,23 @@ wrap_parse = (filepath) ->
     path: filepath
     text: text
 
-  ast: parse file
-  error: error_message
+  parse file
 
-exports.parse = wrap_parse
-
-repeat = (char, n) -> [1..n].map(-> char).join('')
+repeat = (char, n) ->
+  if n > 1 then [1..n].map(-> char).join('')
+  else if n is 1 then char
+  else ''
 
 error_message = (error) ->
   info = []
   lines = error.file.text.split('\n')
   info.push ''
+  info.push "✗ #{error.file.path}: #{error.y + 1}"
   info.push lines[error.y]
-  cursor = repeat '~', error.x
-  if cursor.length > 0 then cursor = cursor[...-1] + '^'
-  cursor += '~~~~~'
-  info.push cursor
-  info.push "@ line #{error.y + 1}: #{error.text}"
+  cursor = repeat ' ', error.x
+  cursor = cursor[...-1] + '^ ' + error.text
+  info.push cursor, ''
   info.join '\n'
+
+exports.parse = wrap_parse
+exports.error = error_message
