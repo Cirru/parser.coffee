@@ -9,9 +9,17 @@ npm install --save cirru-parser
 ```
 ``` coffee
 ret = require('cirru-parser').parse('file_path').ast
-# ret.ast.tree # AST tree
-# ret.ast.errors # array of errors if there are
-# ret.error # an API for putting errors
+ret.ast.tree # AST tree
+ret.ast.errors # array of errors if there are
+
+options =
+  text: 'demo of token'
+  x: 1
+  y: 3
+  file:
+    text: 'content of file'
+    path: 'relative path of file'
+ ret.error options # an API for putting errors
 ```
 
 ### Syntax
@@ -318,6 +326,18 @@ to
     ]
   ]
 ]
+```
+
+For further usages, a file object is attached to each token:
+
+```
+token =
+  text: 'word'
+  x: 0
+  y: 0
+  file:
+    path: './code.cr'
+    text: 'content of code.cr'
 ```
 
 * Code is data

@@ -6,7 +6,7 @@ path = require 'path'
 {protos} = require './states'
 prettyjson = require 'prettyjson'
 
-parse = (text) ->
+parse = (file) ->
   caret = protos.caret.new()
   buffer = protos.buffer.new()
   stack = protos.stack.new()
@@ -18,10 +18,11 @@ parse = (text) ->
   pushStack = (object) -> stack.push name: (caret.wrap object)
   clear_buffer = ->
     # if buffer.text? then ast.push buffer.out() # debug mode
-    if buffer.text? then ast.push (caret.wrap text: buffer.out())
+    if buffer.text?
+      ast.push (caret.wrap text: buffer.out(), file: file)
     if stack.now is 'buffer' then stack.pop()
   put_error = (name) ->
-    ast.errors.push error_message (caret.wrap text: name), text
+    ast.errors.push error_message (caret.wrap text: name, file: file)
   check_bracket = ->
     if brackets.count > 0
       put_error 'bracket not closed'
@@ -31,7 +32,7 @@ parse = (text) ->
 
   ast.nest()
 
-  text.split('').forEach (char) ->
+  file.text.split('').forEach (char) ->
 
     normal_pattern = -> match char,
       '"': -> pushStack 'quote'
@@ -51,7 +52,7 @@ parse = (text) ->
         clear_buffer()
         ast.ease()
         brackets.pop()
-      undefined, -> 
+      undefined, ->
         pushStack 'buffer'
         buffer.add char
 
@@ -115,22 +116,22 @@ parse = (text) ->
   check_bracket()
   ast
 
-wrap_parse = (filename) ->
-  fullpath = path.join process.env.PWD, "./test/#{filename}"
-  text = fs.readFileSync fullpath, 'utf8'
+wrap_parse = (filepath) ->
+  text = fs.readFileSync filepath, 'utf8'
+  file =
+    path: filepath
+    text: text
 
-  path: fullpath
-  ast: parse text
-  script: text.split('\n')
-  error: (error) -> error_message error, text
+  ast: parse file
+  error: error_message
 
 exports.parse = wrap_parse
 
 repeat = (char, n) -> [1..n].map(-> char).join('')
 
-error_message = (error, text) ->
+error_message = (error) ->
   info = []
-  lines = text.split('\n')
+  lines = error.file.text.split('\n')
   info.push ''
   info.push lines[error.y]
   cursor = repeat '~', error.x

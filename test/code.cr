@@ -1,14 +1,9 @@
 
-define a (read cd)
-  if (> a cd)
-    print "demo"
-    print "not demo"
+set a (number 1)
 
-say $ print a
-  save $ b
-    x $ c 8
+print (get a)
 
+print $ power a $ number 4
 
-
-print "fun"
-
+scope a
+  set a (number 3)
