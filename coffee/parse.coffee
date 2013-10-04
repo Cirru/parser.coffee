@@ -2,9 +2,8 @@
 fs = require 'fs'
 path = require 'path'
 {match} = require 'coffee-pattern'
-{type, render, stringify} = require './util'
+{type, stringify} = require './util'
 {protos} = require './states'
-prettyjson = require 'prettyjson'
 
 parse = (file) ->
   caret = protos.caret.new()
