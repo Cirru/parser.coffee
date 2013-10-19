@@ -3,15 +3,27 @@
 
 source_file = "../cirru/indent.cr"
 
+q = (query) ->
+  document.querySelector query
+
 req = new XMLHttpRequest
 req.open "get", source_file
+req.send()
 req.onload = ->
-  # cirru.parse.compact = yes
-  res = cirru.parse req.response, source_file
+  cirru.parse.compact = yes
+  q("textarea.demo").value = req.response
+  paint req.response
+
+paint = (text) ->
+  console.clear()
+  res = cirru.parse text, source_file
   if compactJsonRender?
     compactJsonRender.hide = yes
-    console.log compactJsonRender res
+    lines = compactJsonRender res
   else
-    console.log JSON.stringify res
+    lines = JSON.stringify res
+  q("pre.demo").innerHTML = lines
   console.log res
-req.send()
+
+q("textarea.demo").addEventListener "keyup", ->
+  paint @value
