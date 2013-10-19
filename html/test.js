@@ -11,6 +11,7 @@
   req.onload = function() {
     var res;
     res = parse(req.response, source_file);
+    console.log(JSON.stringify(res, null, 2));
     return console.log(res);
   };
 

@@ -92,15 +92,15 @@ parseTree = (tree) ->
   follows = tree[1..].map (line) ->
     line.dedent()
     line
-  func = tree[0]
-  console.log JSON.stringify (tokenize func), null, 2
+  args = undefined
   if follows.length > 0
     args = parseBlock follows
-    {func, args}
-  else
-    {func}
+  
+  func = parseText tree[0], args
 
-window.tokenize = (line) ->
+  func
+
+tokenize = (line) ->
   tokens = []
   buffer = undefined
   quote_mode = no
@@ -121,7 +121,6 @@ window.tokenize = (line) ->
   until line.isEmpty()
     char = line.shift()
     if quote_mode
-      console.log "in quote"
       if escape_mode
         add_buffer char
         escape_mode = off
@@ -152,6 +151,53 @@ window.tokenize = (line) ->
   tokens
 
 parseText = (line, args) ->
+  tokens = tokenize line
+  paren_record = 0
+  use_dollar = no
+  collection = []
+  pointer = collection
+  history = []
+  dollar_pointer = undefined
+
+  step_in = ->
+    new_pointer = []
+    pointer.push new_pointer
+    history.push pointer
+    pointer = new_pointer
+
+  step_out = ->
+    pointer = history.pop()
+
+  step_data = (a_cursor) ->
+    pointer.push a_cursor.buffer.char # compact tree
+    # pointer.push a_cursor.buffer
+
+  while tokens.length > 0
+    cursor = tokens.shift()
+    if cursor.type is "string"
+      step_data cursor
+    else if cursor.type is "text"
+      if cursor.buffer.char is "$"
+        dollar_pointer = step_in()
+        use_dollar = yes
+      else
+        step_data cursor
+    else if cursor.type is "openParen"
+      step_in()
+      paren_record += 1
+    else if cursor.type is "closeParen"
+      step_out()
+      paren_record -= 1
+      if use_dollar
+        step_out()
+        use_dollar = off
+
+  if paren_record isnt 0 then throw new Error "brackets error"
+  if use_dollar
+    dollar_pointer.push args...
+  else
+    collection.push args...
+  collection
 
 parse = (text, filename) ->
   whole_list = wrap_text text, filename
