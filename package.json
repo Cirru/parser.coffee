@@ -17,6 +17,8 @@
   "author": "jiyinyiyong",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "devDependencies": {},
+  "devDependencies": {
+    "calabash": "~0.1.0"
+  },
   "dependencies": {}
 }
