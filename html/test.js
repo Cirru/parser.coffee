@@ -11,7 +11,12 @@
   req.onload = function() {
     var res;
     res = cirru.parse(req.response, source_file);
-    console.log(JSON.stringify(res, null, 2));
+    if (typeof compactJsonRender !== "undefined" && compactJsonRender !== null) {
+      compactJsonRender.hide = true;
+      console.log(compactJsonRender(res));
+    } else {
+      console.log(JSON.stringify(res));
+    }
     return console.log(res);
   };
 
