@@ -1,28 +1,28 @@
 
 class Charactar
   constructor: (opts) ->
-    @char = opts.char
-    # @x = opts.x
-    # @y =  opts.y
-    # @file = opts.file
+    @text = opts.char
+    @x = opts.x
+    @y =  opts.y
+    @file = opts.file
 
   isBlank: ->
-    @char is " "
+    @text is " "
 
   isOpenParen: ->
-    @char is "("
+    @text is "("
 
   isCloseParen: ->
-    @char is ")"
+    @text is ")"
   
   isDollar: ->
-    @char is "$"
+    @text is "$"
 
   isDoubleQuote: ->
-    @char is '"'
+    @text is '"'
 
   isBackslash: ->
-    @char is "\\"
+    @text is "\\"
 
 class Inline
   constructor: (opts) ->
@@ -114,7 +114,7 @@ tokenize = (line) ->
 
   add_buffer = (the_char) ->
     if buffer?
-      buffer.char += the_char.char
+      buffer.text += the_char.text
     else
       buffer = char
 
@@ -169,15 +169,16 @@ parseText = (line, args) ->
     pointer = history.pop()
 
   step_data = (a_cursor) ->
-    pointer.push a_cursor.buffer.char # compact tree
-    # pointer.push a_cursor.buffer
+    # pointer.push a_cursor.buffer.text # compact tree
+    # console.log error a_cursor.buffer
+    pointer.push a_cursor.buffer
 
   while tokens.length > 0
     cursor = tokens.shift()
     if cursor.type is "string"
       step_data cursor
     else if cursor.type is "text"
-      if cursor.buffer.char is "$"
+      if cursor.buffer.text is "$"
         dollar_pointer = step_in()
         use_dollar = yes
       else
@@ -192,7 +193,6 @@ parseText = (line, args) ->
         step_out()
         use_dollar = off
 
-  if paren_record isnt 0 then throw new Error "brackets error"
   if use_dollar
     dollar_pointer.push args...
   else
@@ -203,17 +203,18 @@ parse = (text, filename) ->
   whole_list = wrap_text text, filename
   parseBlock whole_list
 
-error = ->
+error = (char) ->
+  lines = char.file.text.split("\n")
+  error_line = lines[char.y]
+  hint_line = [1..char.x].map(-> " ").join("") + "^"
+  error_line + "\n" + hint_line
 
 # loader for RequireJS, CommonJS and browsers
 
 if define?
-  define
-    parse: parse
-    error: error
+  define {parse, error}
 else if exports?
   exports.parse = parse
   exports.error = error
 else if window?
-  window.parse = parse
-  window.error = error
+  window.cirru = {parse, error}

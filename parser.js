@@ -4,31 +4,34 @@
 
   Charactar = (function() {
     function Charactar(opts) {
-      this.char = opts.char;
+      this.text = opts.char;
+      this.x = opts.x;
+      this.y = opts.y;
+      this.file = opts.file;
     }
 
     Charactar.prototype.isBlank = function() {
-      return this.char === " ";
+      return this.text === " ";
     };
 
     Charactar.prototype.isOpenParen = function() {
-      return this.char === "(";
+      return this.text === "(";
     };
 
     Charactar.prototype.isCloseParen = function() {
-      return this.char === ")";
+      return this.text === ")";
     };
 
     Charactar.prototype.isDollar = function() {
-      return this.char === "$";
+      return this.text === "$";
     };
 
     Charactar.prototype.isDoubleQuote = function() {
-      return this.char === '"';
+      return this.text === '"';
     };
 
     Charactar.prototype.isBackslash = function() {
-      return this.char === "\\";
+      return this.text === "\\";
     };
 
     return Charactar;
@@ -180,7 +183,7 @@
     };
     add_buffer = function(the_char) {
       if (buffer != null) {
-        return buffer.char += the_char.char;
+        return buffer.text += the_char.text;
       } else {
         return buffer = char;
       }
@@ -246,14 +249,14 @@
       return pointer = history.pop();
     };
     step_data = function(a_cursor) {
-      return pointer.push(a_cursor.buffer.char);
+      return pointer.push(a_cursor.buffer);
     };
     while (tokens.length > 0) {
       cursor = tokens.shift();
       if (cursor.type === "string") {
         step_data(cursor);
       } else if (cursor.type === "text") {
-        if (cursor.buffer.char === "$") {
+        if (cursor.buffer.text === "$") {
           dollar_pointer = step_in();
           use_dollar = true;
         } else {
@@ -271,9 +274,6 @@
         }
       }
     }
-    if (paren_record !== 0) {
-      throw new Error("brackets error");
-    }
     if (use_dollar) {
       dollar_pointer.push.apply(dollar_pointer, args);
     } else {
@@ -288,7 +288,19 @@
     return parseBlock(whole_list);
   };
 
-  error = function() {};
+  error = function(char) {
+    var error_line, hint_line, lines, _i, _ref, _results;
+    lines = char.file.text.split("\n");
+    error_line = lines[char.y];
+    hint_line = (function() {
+      _results = [];
+      for (var _i = 1, _ref = char.x; 1 <= _ref ? _i <= _ref : _i >= _ref; 1 <= _ref ? _i++ : _i--){ _results.push(_i); }
+      return _results;
+    }).apply(this).map(function() {
+      return " ";
+    }).join("") + "^";
+    return error_line + "\n" + hint_line;
+  };
 
   if (typeof define !== "undefined" && define !== null) {
     define({
@@ -299,8 +311,10 @@
     exports.parse = parse;
     exports.error = error;
   } else if (typeof window !== "undefined" && window !== null) {
-    window.parse = parse;
-    window.error = error;
+    window.cirru = {
+      parse: parse,
+      error: error
+    };
   }
 
 }).call(this);
