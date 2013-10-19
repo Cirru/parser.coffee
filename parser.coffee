@@ -6,8 +6,23 @@ class Charactar
     # @y =  opts.y
     # @file = opts.file
 
-  isEmpty: ->
+  isBlank: ->
     @char is " "
+
+  isOpenParen: ->
+    @char is "("
+
+  isCloseParen: ->
+    @char is ")"
+  
+  isDollar: ->
+    @char is "$"
+
+  isDoubleQuote: ->
+    @char is '"'
+
+  isBackslash: ->
+    @char is "\\"
 
 class Inline
   constructor: (opts) ->
@@ -16,17 +31,17 @@ class Inline
     @line = opts.line.split("").map (char, x) ->
       new Charactar {char, x, y, file}
 
-  isEmptyLine: ->
+  isEmpty: ->
     if @line.length is 0
       yes
     else
       @line.every (char) ->
-        char.isEmpty()
+        char.isBlank()
 
   getIndent: ->
     n = 0
     for char in @line
-      if char.isEmpty()
+      if char.isBlank()
         n += 1
       else
         break
@@ -35,8 +50,14 @@ class Inline
   dedent: ->
     @line.shift()
     first = @line[0]
-    if first.isEmpty()
+    if first.isBlank()
       @line.shift()
+
+  shift: ->
+    @line.shift()
+
+  line_end: ->
+    @line.length is 0
 
 wrap_text = (text, filename) ->
   file = {text, filename}
@@ -60,7 +81,7 @@ parseBlock = (curr_lines) ->
         collection.push (parseTree buffer)
       buffer = []
   curr_lines.map (line) ->
-    return if line.isEmptyLine()
+    return if line.isEmpty()
     if line.getIndent() is 0
       digest_buffer()
     buffer.push line
@@ -72,11 +93,65 @@ parseTree = (tree) ->
     line.dedent()
     line
   func = tree[0]
+  console.log JSON.stringify (tokenize func), null, 2
   if follows.length > 0
     args = parseBlock follows
     {func, args}
   else
     {func}
+
+window.tokenize = (line) ->
+  tokens = []
+  buffer = undefined
+  quote_mode = no
+  escape_mode = no
+
+  digest_buffer = (as_string) ->
+    type = if as_string? then "string" else "text"
+    if buffer?
+      tokens.push {type, buffer}
+      buffer = undefined
+
+  add_buffer = (the_char) ->
+    if buffer?
+      buffer.char += the_char.char
+    else
+      buffer = char
+
+  until line.isEmpty()
+    char = line.shift()
+    if quote_mode
+      console.log "in quote"
+      if escape_mode
+        add_buffer char
+        escape_mode = off
+      else
+        if char.isDoubleQuote()
+          digest_buffer "string"
+          quote_mode = off
+        else if char.isBackslash()
+          escape_mode = on
+        else
+          add_buffer char
+    else
+      if char.isBlank()
+        digest_buffer()
+      else if char.isOpenParen()
+        digest_buffer()
+        tokens.push type: "openParen"
+      else if char.isCloseParen()
+        digest_buffer()
+        tokens.push type: "closeParen"
+      else if char.isDoubleQuote()
+        digest_buffer()
+        quote_mode = on
+      else
+        add_buffer char
+  digest_buffer()
+
+  tokens
+
+parseText = (line, args) ->
 
 parse = (text, filename) ->
   whole_list = wrap_text text, filename
