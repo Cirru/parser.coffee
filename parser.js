@@ -103,7 +103,7 @@
     var file;
     file = {
       text: text,
-      filename: filename
+      path: filename
     };
     return text.split("\n").map(function(line, y) {
       return new Inline({
@@ -248,8 +248,8 @@
     step_out = function() {
       return pointer = history.pop();
     };
-    step_data = function(a_cursor) {
-      return pointer.push(a_cursor.buffer);
+    step_data = function(one) {
+      return pointer.push(parse.compact ? one.buffer.text : one.buffer);
     };
     while (tokens.length > 0) {
       cursor = tokens.shift();

@@ -2,7 +2,50 @@
 Cirru Parser
 ------
 
-### Usage
+Cirru is a indentation based grammer for simplicity.
+You may use it to DIY DSLs or scripting languages.
+
+It not designed for tough programming tasks,
+but for small ones where people want to make coding fun.
+
+### API
+
+* parse:
+
+Parse code, filename is optional and useless in compact mode.
+
+```
+parse :: String, String -> Array[]
+tree = parse (content, filename)
+```
+
+* error:
+
+For generating error hints based on the format of AST leafs.
+
+```
+Option =
+  text :: String
+  x :: Number
+  y :: Number
+  file:
+    text :: String
+    path :: String
+error :: Option -> String
+error_hints = error options
+```
+
+* compact
+
+When set `true`, each leaf of the AST tree becomes string,
+when `false`, each leaf is an object with `text x y file`.
+
+```
+parse.compact :: Boolean
+parse.compact = true
+```
+
+#### In Node
 
 ```
 npm install --save cirru-parser
@@ -10,8 +53,8 @@ npm install --save cirru-parser
 ``` coffee
 {parse, error} = require 'cirru-parser'
 ast = parse './file_path.cr'
-ast.tree # AST tree, always has, check ast.errors first
-ast.errors # array of errors if there are, or `[]` by default
+
+parse.compact = no
 
 options =
   text: 'demo of token'
@@ -20,7 +63,29 @@ options =
   file:
     text: 'content of file'
     path: 'relative path of file'
- error options # an API for putting errors
+error options
+```
+
+#### In Browser
+
+Add `parser.js` your HTML, or get it with Bower:
+
+```
+bower install --save cirru-parser
+```
+
+```coffee
+window.cirru # object
+cirru.parse
+cirru.error
+cirru.parse.compact = yes
+```
+
+It could be also used with RequireJS.
+
+```coffee
+define (require, exports) ->
+  {parse, error} = require("../bower_components/cirru-parser/parser")
 ```
 
 ### Syntax
@@ -109,7 +174,6 @@ a b c d
 to
 ```json
 [
-  [],
   [
     "a",
     "b",
@@ -233,8 +297,6 @@ say $ print a
   save $ b
     x $ c 8
 
-
-
 print "fun"
 ```
 to
@@ -341,53 +403,10 @@ token =
     text: 'content of code.cr'
 ```
 
-* Code is data
+### Compatibility
 
-In Cirru, variables are strings, so the parser doesn't have to tell.
-
-### Error messages
-
-* Quote not closed
-
-This could occur when `"` is not closed at line end, or file end.
-
-* Bracket not match
-
-When too many `)` or too many `(` appears, it gives errors.
-
-* demo here:
-
-```
-
-1 (3
-
-2)
-
-"ddd
-```
-has errors:
-```
-
-✗ ./test/piece.cr: 2
-1 (3
-   ^ bracket not closed
-
-
-✗ ./test/piece.cr: 4
-2)
- ^ too many close bracket
-
-
-✗ ./test/piece.cr: 6
-"ddd
-   ^ quote at end
-
-```
-
-### Known issue
-
-* `[]` generated unexpectedly when first line empty
-* Reviewed but not well tested
+`0.5.0` changed the return value structure of `.parse()`
+which `cirru-interpreter` depends on.
 
 ### License
 

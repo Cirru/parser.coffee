@@ -60,7 +60,7 @@ class Inline
     @line.length is 0
 
 wrap_text = (text, filename) ->
-  file = {text, filename}
+  file = {text, path: filename}
   text.split("\n").map (line, y) ->
     new Inline {line, y, file}
 
@@ -168,10 +168,13 @@ parseText = (line, args) ->
   step_out = ->
     pointer = history.pop()
 
-  step_data = (a_cursor) ->
-    # pointer.push a_cursor.buffer.text # compact tree
+  step_data = (one) ->
     # console.log error a_cursor.buffer
-    pointer.push a_cursor.buffer
+    pointer.push \
+      if parse.compact
+        one.buffer.text
+      else
+        one.buffer
 
   while tokens.length > 0
     cursor = tokens.shift()
