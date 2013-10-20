@@ -88,6 +88,11 @@ define (require, exports) ->
   {parse, error} = require("../bower_components/cirru-parser/parser")
 ```
 
+### Live demo
+
+Visit (tested on Chrome): http://jiyinyiyong.github.io/cirru-parser/  
+By typing at right you should see the code updates
+
 ### Syntax
 
 * Lines

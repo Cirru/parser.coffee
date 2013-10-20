@@ -1,0 +1,26 @@
+{
+  "name": "cirru-parser",
+  "version": "0.5.0",
+  "homepage": "https://github.com/jiyinyiyong/cirru-parser",
+  "authors": [
+    "jiyinyiyong <jiyinyiyong@gmail.com>"
+  ],
+  "description": "Parser of Cirru Grammer",
+  "main": "src/parser.js",
+  "keywords": [
+    "cirru",
+    "parser",
+    "indentation"
+  ],
+  "license": "BSD",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "seajs": "*"
+  }
+}
