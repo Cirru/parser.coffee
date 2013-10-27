@@ -1,7 +1,7 @@
 {
   "name": "cirru-parser",
-  "version": "0.5.0",
-  "description": "parser for Cirru syntax",
+  "version": "0.5.1",
+  "description": "Parser for Cirru Grammer",
   "main": "parser.js",
   "scripts": {
     "test": "node-dev test.coffee"

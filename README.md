@@ -19,9 +19,9 @@ parse :: String, String -> Array[]
 tree = parse (content, filename)
 ```
 
-* error:
+* info:
 
-For generating error hints based on the format of AST leafs.
+For generating hints based on the format of AST leafs.
 
 ```
 Option =
@@ -31,8 +31,17 @@ Option =
   file:
     text :: String
     path :: String
-error :: Option -> String
-error_hints = error options
+info :: Option, String -> String
+info_hints = info options, "a info demo"
+```
+
+`info` is a piece of text to display:
+
+```
+a demo info
+./cirru/indent.cr : 7
+say $ print a
+            ^
 ```
 
 * compact
@@ -51,7 +60,7 @@ parse.compact = true
 npm install --save cirru-parser
 ```
 ``` coffee
-{parse, error} = require 'cirru-parser'
+{parse, info} = require 'cirru-parser'
 ast = parse './file_path.cr'
 
 parse.compact = no
@@ -63,7 +72,7 @@ options =
   file:
     text: 'content of file'
     path: 'relative path of file'
-error options
+info options, "a demo of info"
 ```
 
 #### In Browser
@@ -77,7 +86,7 @@ bower install --save cirru-parser
 ```coffee
 window.cirru # object
 cirru.parse
-cirru.error
+cirru.info
 cirru.parse.compact = yes
 ```
 
@@ -85,7 +94,7 @@ It could be also used with RequireJS.
 
 ```coffee
 define (require, exports) ->
-  {parse, error} = require("../bower_components/cirru-parser/parser")
+  {parse, info} = require("../bower_components/cirru-parser/parser")
 ```
 
 ### Live demo

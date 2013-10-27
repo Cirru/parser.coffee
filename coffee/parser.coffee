@@ -169,8 +169,8 @@ parseText = (line, args) ->
     pointer = history.pop()
 
   step_data = (one) ->
-    # console.log error a_cursor.buffer
-    pointer.push \
+    # console.log info one.buffer, "a demo info"
+    pointer?.push? \
       if parse.compact
         one.buffer.text
       else
@@ -206,18 +206,21 @@ parse = (text, filename) ->
   whole_list = wrap_text text, filename
   parseBlock whole_list
 
-error = (char) ->
+info = (char, msg) ->
+  msg or= ""
   lines = char.file.text.split("\n")
-  error_line = lines[char.y]
-  hint_line = [1..char.x].map(-> " ").join("") + "^"
-  error_line + "\n" + hint_line
+  ret = [msg]
+  ret.push char.file.path + " : " + (char.y + 1)
+  ret.push lines[char.y]
+  ret.push [1..char.x].map(-> " ").join("") + "^"
+  ret.join "\n"
 
 # loader for RequireJS, CommonJS and browsers
 
 if define?
-  define {parse, error}
+  define {parse, info}
 else if exports?
   exports.parse = parse
-  exports.error = error
+  exports.info = info
 else if window?
-  window.cirru = {parse, error}
+  window.cirru = {parse, info}
