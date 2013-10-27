@@ -19,7 +19,7 @@ define (require, exports) ->
     paint req.response
 
   paint = (text) ->
-    console.clear()
+    # console.clear()
     res = cirru.parse text, source_file
     compact.render.hide = yes
     q("textarea.target").value = (compact.render res).trimRight()
