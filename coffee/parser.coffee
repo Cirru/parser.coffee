@@ -115,8 +115,18 @@ tokenize = (line) ->
   add_buffer = (the_char) ->
     if buffer?
       buffer.text += the_char.text
+      buffer.end.x = the_char.x
+      buffer.end.y = the_char.y
     else
-      buffer = char
+      buffer =
+        text: the_char.text
+        file: the_char.file
+        start:
+          x: the_char.x
+          y: the_char.y
+        end:
+          x: the_char.x
+          y: the_char.y
 
   until line.isEmpty()
     char = line.shift()
@@ -169,7 +179,6 @@ parseText = (line, args) ->
     pointer = history.pop()
 
   step_data = (one) ->
-    # console.log info one.buffer, "a demo info"
     pointer?.push? \
       if parse.compact
         one.buffer.text
@@ -206,21 +215,11 @@ parse = (text, filename) ->
   whole_list = wrap_text text, filename
   parseBlock whole_list
 
-info = (char, msg) ->
-  msg or= ""
-  lines = char.file.text.split("\n")
-  ret = [msg]
-  ret.push char.file.path + " : " + (char.y + 1)
-  ret.push lines[char.y]
-  ret.push [1..char.x].map(-> " ").join("") + "^"
-  ret.join "\n"
-
 # loader for RequireJS, CommonJS and browsers
 
 if define?
-  define {parse, info}
+  define {parse}
 else if exports?
   exports.parse = parse
-  exports.info = info
 else if window?
-  window.cirru = {parse, info}
+  window.cirru = {parse}

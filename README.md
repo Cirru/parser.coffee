@@ -19,35 +19,10 @@ parse :: String, String -> Array[]
 tree = parse (content, filename)
 ```
 
-* info:
-
-For generating hints based on the format of AST leafs.
-
-```
-Option =
-  text :: String
-  x :: Number
-  y :: Number
-  file:
-    text :: String
-    path :: String
-info :: Option, String -> String
-info_hints = info options, "a info demo"
-```
-
-`info` is a piece of text to display:
-
-```
-a demo info
-./cirru/indent.cr : 7
-say $ print a
-            ^
-```
-
 * compact
 
 When set `true`, each leaf of the AST tree becomes string,
-when `false`, each leaf is an object with `text x y file`.
+when `false`, each leaf is an object with `text start end file`.
 
 ```
 parse.compact :: Boolean
@@ -67,8 +42,12 @@ parse.compact = no
 
 options =
   text: 'demo of token'
-  x: 1
-  y: 3
+  start:
+    x: 1
+    y: 3
+  end:
+    x: 4
+    y: 3
   file:
     text: 'content of file'
     path: 'relative path of file'
@@ -373,36 +352,41 @@ to
 Generated syntax tree contains line numbers:
 
 ```
-
 demo
   demo $ demo
 ```
 to
 ```json
-[
-  [],
-  [
-    {
-      "text": "demo",
-      "x": 4,
-      "y": 1
-    },
-    [
-      {
-        "text": "demo",
-        "x": 6,
-        "y": 2
-      },
-      [
-        {
-          "text": "demo",
-          "x": 13,
-          "y": 2
-        }
-      ]
-    ]
-  ]
-]
+  - - text: "demo"
+      file: 
+        text: "demo\n  demo $ demo"
+        path: "./cirru/indent.cr"
+      start: 
+        x: 0
+        y: 0
+      end: 
+        x: 3
+        y: 0
+    - - text: "demo"
+        file: 
+          text: "demo\n  demo $ demo"
+          path: "./cirru/indent.cr"
+        start: 
+          x: 2
+          y: 1
+        end: 
+          x: 5
+          y: 1
+      - - text: "demo"
+          file: 
+            text: "demo\n  demo $ demo"
+            path: "./cirru/indent.cr"
+          start: 
+            x: 9
+            y: 1
+          end: 
+            x: 12
+            y: 1
 ```
 
 For further usages, a file object is attached to each token:
@@ -410,8 +394,8 @@ For further usages, a file object is attached to each token:
 ```
 token =
   text: 'word'
-  x: 0
-  y: 0
+  start: {}
+  end: {}
   file:
     path: './code.cr'
     text: 'content of code.cr'

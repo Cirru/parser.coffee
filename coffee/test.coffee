@@ -13,7 +13,7 @@ define (require, exports) ->
   req.open "get", source_file
   req.send()
   req.onload = ->
-    cirru.parse.compact = yes
+    # cirru.parse.compact = yes
     q("textarea.source").value = req.response
     q("textarea.source").focus()
     paint req.response

@@ -16,7 +16,6 @@
     req.open("get", source_file);
     req.send();
     req.onload = function() {
-      cirru.parse.compact = true;
       q("textarea.source").value = req.response;
       q("textarea.source").focus();
       return paint(req.response);
