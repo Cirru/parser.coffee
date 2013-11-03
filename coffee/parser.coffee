@@ -171,6 +171,11 @@ parseText = (line, args) ->
     collection = []
     push = (data, trace) ->
       collection.push data
+    do take_args = ->
+      if tokens.length is 0
+        if args?.length > 0
+          collection.push args...
+          args = []
 
     while tokens.length > 0
       if by_dollar
@@ -182,6 +187,7 @@ parseText = (line, args) ->
           push (get_buffer cursor), "a"
         when "text"
           if cursor.buffer.text is "$"
+            # take_args()
             push (build yes), "b"
           else
             push (get_buffer cursor), "c"
@@ -189,9 +195,7 @@ parseText = (line, args) ->
           push (build off), "d"
         when "closeParen"
           return collection
-      if tokens.length is 0
-        collection.push args...
-        args = []
+      take_args()
     collection
 
   build off

@@ -253,11 +253,19 @@
       }
     };
     build = function(by_dollar) {
-      var collection, cursor, push, _ref;
+      var collection, cursor, push, take_args, _ref;
       collection = [];
       push = function(data, trace) {
         return collection.push(data);
       };
+      (take_args = function() {
+        if (tokens.length === 0) {
+          if ((args != null ? args.length : void 0) > 0) {
+            collection.push.apply(collection, args);
+            return args = [];
+          }
+        }
+      })();
       while (tokens.length > 0) {
         if (by_dollar) {
           if (((_ref = tokens[0]) != null ? _ref.type : void 0) === "closeParen") {
@@ -282,10 +290,7 @@
           case "closeParen":
             return collection;
         }
-        if (tokens.length === 0) {
-          collection.push.apply(collection, args);
-          args = [];
-        }
+        take_args();
       }
       return collection;
     };
