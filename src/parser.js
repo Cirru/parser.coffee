@@ -243,56 +243,53 @@
   };
 
   parseText = function(line, args) {
-    var collection, cursor, dollar_pointer, history, paren_record, pointer, step_data, step_in, step_out, tokens, use_dollar;
+    var build, get_buffer, tokens;
     tokens = tokenize(line);
-    paren_record = 0;
-    use_dollar = false;
-    collection = [];
-    pointer = collection;
-    history = [];
-    dollar_pointer = void 0;
-    step_in = function() {
-      var new_pointer;
-      new_pointer = [];
-      pointer.push(new_pointer);
-      history.push(pointer);
-      return pointer = new_pointer;
+    get_buffer = function(data) {
+      if (parse.compact) {
+        return data.buffer.text;
+      } else {
+        return data.buffer;
+      }
     };
-    step_out = function() {
-      return pointer = history.pop();
-    };
-    step_data = function(one) {
-      return pointer != null ? typeof pointer.push === "function" ? pointer.push(parse.compact ? one.buffer.text : one.buffer) : void 0 : void 0;
-    };
-    while (tokens.length > 0) {
-      cursor = tokens.shift();
-      if (cursor.type === "string") {
-        step_data(cursor);
-      } else if (cursor.type === "text") {
-        if (cursor.buffer.text === "$") {
-          dollar_pointer = step_in();
-          use_dollar = true;
-        } else {
-          step_data(cursor);
+    build = function(by_dollar) {
+      var collection, cursor, push, _ref;
+      collection = [];
+      push = function(data, trace) {
+        return collection.push(data);
+      };
+      while (tokens.length > 0) {
+        if (by_dollar) {
+          if (((_ref = tokens[0]) != null ? _ref.type : void 0) === "closeParen") {
+            return collection;
+          }
         }
-      } else if (cursor.type === "openParen") {
-        step_in();
-        paren_record += 1;
-      } else if (cursor.type === "closeParen") {
-        step_out();
-        paren_record -= 1;
-        if (use_dollar) {
-          step_out();
-          use_dollar = false;
+        cursor = tokens.shift();
+        switch (cursor.type) {
+          case "string":
+            push(get_buffer(cursor), "a");
+            break;
+          case "text":
+            if (cursor.buffer.text === "$") {
+              push(build(true), "b");
+            } else {
+              push(get_buffer(cursor), "c");
+            }
+            break;
+          case "openParen":
+            push(build(false), "d");
+            break;
+          case "closeParen":
+            return collection;
+        }
+        if (tokens.length === 0) {
+          collection.push.apply(collection, args);
+          args = [];
         }
       }
-    }
-    if (use_dollar) {
-      dollar_pointer.push.apply(dollar_pointer, args);
-    } else {
-      collection.push.apply(collection, args);
-    }
-    return collection;
+      return collection;
+    };
+    return build(false);
   };
 
   parse = function(text, filename) {

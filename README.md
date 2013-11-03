@@ -280,7 +280,6 @@ to
 Combine the syntax rules above:
 
 ```
-
 define a (read cd)
   if (> a cd)
     print "demo"
@@ -295,7 +294,6 @@ print "fun"
 to
 ```json
 [
-  [],
   [
     "define",
     "a",
@@ -355,8 +353,8 @@ Generated syntax tree contains line numbers:
 demo
   demo $ demo
 ```
-to
-```json
+to (simplied print):
+```
   - - text: "demo"
       file: 
         text: "demo\n  demo $ demo"

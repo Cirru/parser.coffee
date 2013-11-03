@@ -162,54 +162,39 @@ tokenize = (line) ->
 
 parseText = (line, args) ->
   tokens = tokenize line
-  paren_record = 0
-  use_dollar = no
-  collection = []
-  pointer = collection
-  history = []
-  dollar_pointer = undefined
 
-  step_in = ->
-    new_pointer = []
-    pointer.push new_pointer
-    history.push pointer
-    pointer = new_pointer
+  get_buffer = (data) ->
+    if parse.compact then data.buffer.text
+    else data.buffer
 
-  step_out = ->
-    pointer = history.pop()
+  build = (by_dollar) ->
+    collection = []
+    push = (data, trace) ->
+      collection.push data
 
-  step_data = (one) ->
-    pointer?.push? \
-      if parse.compact
-        one.buffer.text
-      else
-        one.buffer
+    while tokens.length > 0
+      if by_dollar
+        if tokens[0]?.type is "closeParen"
+          return collection
+      cursor = tokens.shift()
+      switch cursor.type
+        when "string"
+          push (get_buffer cursor), "a"
+        when "text"
+          if cursor.buffer.text is "$"
+            push (build yes), "b"
+          else
+            push (get_buffer cursor), "c"
+        when "openParen" 
+          push (build off), "d"
+        when "closeParen"
+          return collection
+      if tokens.length is 0
+        collection.push args...
+        args = []
+    collection
 
-  while tokens.length > 0
-    cursor = tokens.shift()
-    if cursor.type is "string"
-      step_data cursor
-    else if cursor.type is "text"
-      if cursor.buffer.text is "$"
-        dollar_pointer = step_in()
-        use_dollar = yes
-      else
-        step_data cursor
-    else if cursor.type is "openParen"
-      step_in()
-      paren_record += 1
-    else if cursor.type is "closeParen"
-      step_out()
-      paren_record -= 1
-      if use_dollar
-        step_out()
-        use_dollar = off
-
-  if use_dollar
-    dollar_pointer.push args...
-  else
-    collection.push args...
-  collection
+  build off
 
 parse = (text, filename) ->
   whole_list = wrap_text text, filename
