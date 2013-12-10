@@ -96,9 +96,7 @@ parseTree = (tree) ->
   if follows.length > 0
     args = parseBlock follows
   
-  func = parseText tree[0], args
-
-  func
+  parseText tree[0], args
 
 tokenize = (line) ->
   tokens = []
@@ -164,13 +162,11 @@ parseText = (line, args) ->
   tokens = tokenize line
 
   get_buffer = (data) ->
-    if parse.compact then data.buffer.text
-    else data.buffer
+    if parse.line_info then data.buffer
+    else data.buffer.text
 
   build = (by_dollar) ->
     collection = []
-    push = (data, trace) ->
-      collection.push data
     do take_args = ->
       if tokens.length is 0
         if args?.length > 0
@@ -184,15 +180,14 @@ parseText = (line, args) ->
       cursor = tokens.shift()
       switch cursor.type
         when "string"
-          push (get_buffer cursor), "a"
+          collection.push (get_buffer cursor)
         when "text"
           if cursor.buffer.text is "$"
-            # take_args()
-            push (build yes), "b"
+            collection.push (build yes)
           else
-            push (get_buffer cursor), "c"
+            collection.push (get_buffer cursor)
         when "openParen" 
-          push (build off), "d"
+          collection.push (build off)
         when "closeParen"
           return collection
       take_args()
@@ -200,7 +195,8 @@ parseText = (line, args) ->
 
   build off
 
-parse = (text, filename) ->
+parse = (text, filename, line_info) ->
+  parse.line_info = line_info
   whole_list = wrap_text text, filename
   parseBlock whole_list
 

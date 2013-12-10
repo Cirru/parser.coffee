@@ -13,7 +13,6 @@ define (require, exports) ->
   req.open "get", source_file
   req.send()
   req.onload = ->
-    # cirru.parse.compact = yes
     q("textarea.source").value = req.response
     q("textarea.source").focus()
     paint req.response
@@ -21,6 +20,7 @@ define (require, exports) ->
   paint = (text) ->
     # console.clear()
     res = cirru.parse text, source_file
+    console.log res
     compact.render.hide = yes
     q("textarea.target").value = (compact.render res).trimRight()
 

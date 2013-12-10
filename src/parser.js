@@ -151,7 +151,7 @@
   };
 
   parseTree = function(tree) {
-    var args, follows, func;
+    var args, follows;
     follows = tree.slice(1).map(function(line) {
       line.dedent();
       return line;
@@ -160,8 +160,7 @@
     if (follows.length > 0) {
       args = parseBlock(follows);
     }
-    func = parseText(tree[0], args);
-    return func;
+    return parseText(tree[0], args);
   };
 
   tokenize = function(line) {
@@ -246,18 +245,15 @@
     var build, get_buffer, tokens;
     tokens = tokenize(line);
     get_buffer = function(data) {
-      if (parse.compact) {
-        return data.buffer.text;
-      } else {
+      if (parse.line_info) {
         return data.buffer;
+      } else {
+        return data.buffer.text;
       }
     };
     build = function(by_dollar) {
-      var collection, cursor, push, take_args, _ref;
+      var collection, cursor, take_args, _ref;
       collection = [];
-      push = function(data, trace) {
-        return collection.push(data);
-      };
       (take_args = function() {
         if (tokens.length === 0) {
           if ((args != null ? args.length : void 0) > 0) {
@@ -275,17 +271,17 @@
         cursor = tokens.shift();
         switch (cursor.type) {
           case "string":
-            push(get_buffer(cursor), "a");
+            collection.push(get_buffer(cursor));
             break;
           case "text":
             if (cursor.buffer.text === "$") {
-              push(build(true), "b");
+              collection.push(build(true));
             } else {
-              push(get_buffer(cursor), "c");
+              collection.push(get_buffer(cursor));
             }
             break;
           case "openParen":
-            push(build(false), "d");
+            collection.push(build(false));
             break;
           case "closeParen":
             return collection;
@@ -297,8 +293,9 @@
     return build(false);
   };
 
-  parse = function(text, filename) {
+  parse = function(text, filename, line_info) {
     var whole_list;
+    parse.line_info = line_info;
     whole_list = wrap_text(text, filename);
     return parseBlock(whole_list);
   };

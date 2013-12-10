@@ -1,6 +1,6 @@
 {
   "name": "cirru-parser",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "homepage": "https://github.com/jiyinyiyong/cirru-parser",
   "authors": [
     "jiyinyiyong <jiyinyiyong@gmail.com>"
@@ -20,7 +20,5 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
-    "seajs": "*"
-  }
+  "devDependencies": {}
 }

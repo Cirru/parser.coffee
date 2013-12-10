@@ -1,6 +1,6 @@
 {
   "name": "cirru-parser",
-  "version": "0.5.5",
+  "version": "0.5.6",
   "description": "Parser for Cirru Grammer",
   "main": "src/parser.js",
   "scripts": {
@@ -17,8 +17,6 @@
   "author": "jiyinyiyong",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "devDependencies": {
-    "calabash": "~0.1.0"
-  },
+  "devDependencies": {},
   "dependencies": {}
 }

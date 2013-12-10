@@ -23,6 +23,7 @@
     paint = function(text) {
       var res;
       res = cirru.parse(text, source_file);
+      console.log(res);
       compact.render.hide = true;
       return q("textarea.target").value = (compact.render(res)).trimRight();
     };

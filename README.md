@@ -15,19 +15,14 @@ but for small ones where people want to make coding fun.
 Parse code, filename is optional and useless in compact mode.
 
 ```
-parse :: String, String -> Array[]
-tree = parse (content, filename)
+parse :: String, String, Bool -> Array[]
+tree = parse (content, filename, lineinfo)
 ```
 
-* compact
+`filename` and `lineinfo` are optional.
 
-When set `true`, each leaf of the AST tree becomes string,
-when `false`, each leaf is an object with `text start end file`.
-
-```
-parse.compact :: Boolean
-parse.compact = true
-```
+When `lineinfo` is `false` or `undefined`, each leaf of the AST tree is a string,
+when `true`, each leaf is an object with `text start end file`.
 
 #### In Node
 
@@ -35,45 +30,23 @@ parse.compact = true
 npm install --save cirru-parser
 ```
 ``` coffee
-{parse, info} = require 'cirru-parser'
-ast = parse './file_path.cr'
-
-parse.compact = no
-
-options =
-  text: 'demo of token'
-  start:
-    x: 1
-    y: 3
-  end:
-    x: 4
-    y: 3
-  file:
-    text: 'content of file'
-    path: 'relative path of file'
-info options, "a demo of info"
+{parse} = require 'cirru-parser'
+ast = parse 'code', './file_path.cr'
 ```
 
-#### In Browser
+#### RequireJS
 
-Add `parser.js` your HTML, or get it with Bower:
+Link http://exportsjs.u.qiniudn.com/cirru-parser.js
 
 ```
-bower install --save cirru-parser
-```
-
-```coffee
-window.cirru # object
-cirru.parse
-cirru.info
-cirru.parse.compact = yes
+window.cirru.parse 'code'
 ```
 
 It could be also used with RequireJS.
 
 ```coffee
 define (require, exports) ->
-  {parse, info} = require("../bower_components/cirru-parser/parser")
+  {parse} = require("../bower_components/cirru-parser/parser")
 ```
 
 ### Live demo
