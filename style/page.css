@@ -1,0 +1,28 @@
+
+body {
+  margin: 0px;
+}
+* {
+  box-sizing: border-box;
+}
+.demo {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  padding: 10px;
+  font-size: 14px;
+  font-family: Monaco, monospace;
+  background-color: hsl(240,40%,96%);
+  border: none;
+  resize: none;
+  outline: none;
+}
+.demo:focus {
+  background-color: white;
+}
+.source {
+  right: 0px;
+}
+.target {
+  left: 0px;
+}

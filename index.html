@@ -3,46 +3,19 @@
 <html>
 <head>
   <title>Cirru</title>
-  <script type="text/javascript" src="http://exportsjs.u.qiniudn.com/sea.js"></script>
+  <script type="text/javascript" src="bower_components/seajs/sea.js"></script>
   <script type="text/javascript">
     seajs.config({
+      base: './',
       alias: {
         "cirru": "./parser",
-        "compact": "http://exportsjs.u.qiniudn.com/compact-json"
+        "compact": "bower_components/compact-json/compact"
       }
     })
     seajs.use("./src/test")
   </script>
 </head>
-<style type="text/css">
-  body {
-    margin: 0px;
-  }
-  * {
-    box-sizing: border-box;
-  }
-  .demo {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    padding: 10px;
-    font-size: 14px;
-    font-family: Monaco, monospace;
-    background-color: hsl(240,40%,96%);
-    border: none;
-    resize: none;
-    outline: none;
-  }
-  .demo:focus {
-    background-color: white;
-  }
-  .source {
-    right: 0px;
-  }
-  .target {
-    left: 0px;
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="style/page.css">
 <body>
   <textarea class="demo source" placeholder="Source Code"></textarea>
   <textarea class="demo target" placeholder="Compiled Data"></textarea>

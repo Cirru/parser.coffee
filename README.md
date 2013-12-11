@@ -51,7 +51,7 @@ define (require, exports) ->
 
 ### Live demo
 
-Visit (tested on Chrome): http://jiyinyiyong.github.io/cirru-parser/  
+Visit (tested on Chrome): http://repo.jiyinyiyong.me/cirru-parser/  
 By typing at right you should see the code updates
 
 ### Syntax

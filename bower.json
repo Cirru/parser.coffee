@@ -20,5 +20,8 @@
     "test",
     "tests"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "seajs": "*",
+    "compact-json": "~0.1.1"
+  }
 }
