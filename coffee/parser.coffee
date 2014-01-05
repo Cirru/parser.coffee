@@ -134,7 +134,7 @@ tokenize = (line) ->
         escape_mode = off
       else
         if char.isDoubleQuote()
-          digest_buffer "string"
+          digest_buffer yes
           quote_mode = off
         else if char.isBackslash()
           escape_mode = on

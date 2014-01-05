@@ -208,7 +208,7 @@
           escape_mode = false;
         } else {
           if (char.isDoubleQuote()) {
-            digest_buffer("string");
+            digest_buffer(true);
             quote_mode = false;
           } else if (char.isBackslash()) {
             escape_mode = true;
