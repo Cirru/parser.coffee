@@ -31,7 +31,7 @@ npm install --save cirru-parser
 ```
 ``` coffee
 {parse} = require 'cirru-parser'
-ast = parse 'code', './file_path.cr'
+ast = parse 'code', './file_path.cirru'
 ```
 
 #### RequireJS
@@ -331,7 +331,7 @@ to (simplied print):
   - - text: "demo"
       file: 
         text: "demo\n  demo $ demo"
-        path: "./cirru/indent.cr"
+        path: "./cirru/indent.cirru"
       start: 
         x: 0
         y: 0
@@ -341,7 +341,7 @@ to (simplied print):
     - - text: "demo"
         file: 
           text: "demo\n  demo $ demo"
-          path: "./cirru/indent.cr"
+          path: "./cirru/indent.cirru"
         start: 
           x: 2
           y: 1
@@ -351,7 +351,7 @@ to (simplied print):
       - - text: "demo"
           file: 
             text: "demo\n  demo $ demo"
-            path: "./cirru/indent.cr"
+            path: "./cirru/indent.cirru"
           start: 
             x: 9
             y: 1
@@ -368,8 +368,8 @@ token =
   start: {}
   end: {}
   file:
-    path: './code.cr'
-    text: 'content of code.cr'
+    path: './code.cirru'
+    text: 'content of code.cirru'
 ```
 
 ### Compatibility
