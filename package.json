@@ -4,7 +4,7 @@
   "description": "Parser for Cirru Grammer",
   "main": "src/parser.js",
   "scripts": {
-    "test": "node-dev test.coffee"
+    "test": "coffee test.coffee"
   },
   "repository": {
     "type": "git",
