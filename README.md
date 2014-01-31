@@ -38,7 +38,7 @@ ast = parse 'code', './file_path.cirru'
 
 Link http://exportsjs.u.qiniudn.com/cirru-parser.js
 
-```
+```coffee
 window.cirru.parse 'code'
 ```
 
@@ -60,14 +60,13 @@ By typing at right you should see the code updates
 
 Mutiple lines:
 
-```
+```cirru
 line 1
 line 2
 line-3
 line 4
 ```
-to
-```
+```json
 [
   [
     "line",
@@ -92,7 +91,7 @@ to
 Parentheses create nesting blocks.
 But each open bracket its close bracket should be kept in the same line.
 
-```
+```cirru
 3 4 (1) 4
 
 ((((1))))
@@ -131,13 +130,11 @@ x
 Strings are wrapped in `"`s.
 Meanwhile single quotes are regarded as plain text.
 
-```
-
+```cirru
 a b c d
 "a b c d"
 "a b \" c d"
 ```
-to
 ```json
 [
   [
@@ -159,7 +156,7 @@ to
 
 Cirru must be an indentation-sensitive language:
 
-```
+```cirru
 a
   b
     c
@@ -167,7 +164,6 @@ e f
     g
   h
 ```
-to
 ```json
 [
   [
@@ -198,7 +194,7 @@ to
 
 `$` is used in reducing indentations:
 
-```
+```cirru
 a $
 
 b $ c
@@ -209,7 +205,6 @@ d $ e
 g $ h
   i j $ k $
 ```
-to
 ```json
 [
   [
@@ -248,11 +243,41 @@ to
 ]
 ```
 
+### Unfolding with `,`
+
+```cirru
+set
+  add 1
+  , x y (add 5)
+  add 2
+```
+```json
+[
+  [
+    "set",
+    [
+      "add",
+      "1"
+    ],
+    "x",
+    "y",
+    [
+      "add",
+      "5"
+    ],
+    [
+      "add",
+      "2"
+    ]
+  ]
+]
+```
+
 ### A glance of Cirru
 
 Combine the syntax rules above:
 
-```
+```cirru
 define a (read cd)
   if (> a cd)
     print "demo"
@@ -264,7 +289,6 @@ say $ print a
 
 print "fun"
 ```
-to
 ```json
 [
   [
@@ -322,7 +346,7 @@ to
 
 Generated syntax tree contains line numbers:
 
-```
+```cirru
 demo
   demo $ demo
 ```
@@ -362,7 +386,7 @@ to (simplied print):
 
 For further usages, a file object is attached to each token:
 
-```
+```coffee
 token =
   text: 'word'
   start: {}

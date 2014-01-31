@@ -170,7 +170,19 @@ parseText = (line, args) ->
     do take_args = ->
       if tokens.length is 0
         if args?.length > 0
-          collection.push args...
+          for line in args
+            if Array.isArray line[0]
+              dispersive = no
+            else
+              if parse.line_info
+                dispersive = line[0].text is ','
+              else
+                dispersive = line[0] is ','
+            if dispersive
+              collection.push line[1..]...
+            else
+              collection.push line
+          # collection.push args...
           args = []
 
     while tokens.length > 0
