@@ -16,13 +16,15 @@ Parse code, filename is optional and useless in compact mode.
 
 ```
 parse :: String, String, Bool -> Array[]
-tree = parse (content, filename, lineinfo)
+tree = parse (content, filename)
+
+parseShort :: String, String, Bool -> Array[]
+tree = parseShort (content, filename)
 ```
 
-`filename` and `lineinfo` are optional.
+`filename` is optional.
 
-When `lineinfo` is `false` or `undefined`, each leaf of the AST tree is a string,
-when `true`, each leaf is an object with `text start end file`.
+`parseShort` returns syntax tree with file infos.
 
 #### In Node
 

@@ -8,7 +8,6 @@ q = (query) ->
 
 define (require, exports) ->
   cirru = require "cirru"
-  compact = require "compact"
   req = new XMLHttpRequest
   req.open "get", source_file
   req.send()
@@ -19,10 +18,9 @@ define (require, exports) ->
 
   paint = (text) ->
     # console.clear()
-    res = cirru.parse text, source_file
+    res = cirru.parseShort text, source_file
     console.log res
-    compact.render.hide = yes
-    q("textarea.target").value = (compact.render res).trimRight()
+    q("textarea.target").value = JSON.stringify res, null, 2
 
   q("textarea.source").onkeyup = ->
     paint @value

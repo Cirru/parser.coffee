@@ -161,10 +161,6 @@ tokenize = (line) ->
 parseText = (line, args) ->
   tokens = tokenize line
 
-  get_buffer = (data) ->
-    if parse.line_info then data.buffer
-    else data.buffer.text
-
   build = (by_dollar) ->
     collection = []
     do take_args = ->
@@ -174,10 +170,7 @@ parseText = (line, args) ->
             if Array.isArray line[0]
               dispersive = no
             else
-              if parse.line_info
-                dispersive = line[0].text is ','
-              else
-                dispersive = line[0] is ','
+              dispersive = line[0].text is ','
             if dispersive
               collection.push line[1..]...
             else
@@ -192,12 +185,12 @@ parseText = (line, args) ->
       cursor = tokens.shift()
       switch cursor.type
         when "string"
-          collection.push (get_buffer cursor)
+          collection.push cursor.buffer
         when "text"
           if cursor.buffer.text is "$"
             collection.push (build yes)
           else
-            collection.push (get_buffer cursor)
+            collection.push cursor.buffer
         when "openParen" 
           collection.push (build off)
         when "closeParen"
@@ -207,16 +200,24 @@ parseText = (line, args) ->
 
   build off
 
-parse = (text, filename, line_info) ->
-  parse.line_info = line_info
+parse = (text, filename) ->
   whole_list = wrap_text text, filename
   parseBlock whole_list
+
+parseShort = (args...) ->
+  short = (data) ->
+    if Array.isArray data
+      data.map short
+    else
+      data.text
+  short parse(args...)
 
 # loader for RequireJS, CommonJS and browsers
 
 if define?
-  define {parse}
+  define {parse, parseShort}
 else if exports?
   exports.parse = parse
+  exports.parseShort = parseShort
 else if window?
-  window.cirru = {parse}
+  window.cirru = {parse, parseShort}
