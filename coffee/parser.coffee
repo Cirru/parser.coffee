@@ -47,7 +47,7 @@ class Inline
         break
     Math.ceil (n / 2)
 
-  dedent: ->
+  outdent: ->
     @line.shift()
     first = @line[0]
     if first.isBlank()
@@ -66,7 +66,7 @@ wrap_text = (text, filename) ->
 
 parseNested = (curr_lines) ->
   curr_lines.map (line) ->
-    line.dedent()
+    line.outdent()
   parseBlock curr_lines
 
 parseBlock = (curr_lines) ->
@@ -90,7 +90,7 @@ parseBlock = (curr_lines) ->
 
 parseTree = (tree) ->
   follows = tree[1..].map (line) ->
-    line.dedent()
+    line.outdent()
     line
   args = undefined
   if follows.length > 0
