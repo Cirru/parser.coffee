@@ -26,7 +26,7 @@ tree = parseShort (content, filename)
 
 `parseShort` returns syntax tree with file infos.
 
-#### In Node
+#### CommonJS support
 
 ```
 npm install --save cirru-parser
@@ -36,24 +36,9 @@ npm install --save cirru-parser
 ast = parse 'code', './file_path.cirru'
 ```
 
-#### RequireJS
-
-Link http://exportsjs.u.qiniudn.com/cirru-parser.js
-
-```coffee
-window.cirru.parse 'code'
-```
-
-It could be also used with RequireJS.
-
-```coffee
-define (require, exports) ->
-  {parse} = require("../bower_components/cirru-parser/parser")
-```
-
 ### Live demo
 
-Visit (tested on Chrome): http://repo.jiyinyiyong.me/cirru-parser/  
+Visit (tested on Chrome): http://repo.tiye.me/cirru-parser.coffee/ .
 By typing at right you should see the code updates
 
 ### Syntax
