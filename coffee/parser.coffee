@@ -214,10 +214,5 @@ parseShort = (args...) ->
 
 # loader for RequireJS, CommonJS and browsers
 
-if define?
-  define {parse, parseShort}
-else if exports?
-  exports.parse = parse
-  exports.parseShort = parseShort
-else if window?
-  window.cirru = {parse, parseShort}
+exports.parse = parse
+exports.parseShort = parseShort

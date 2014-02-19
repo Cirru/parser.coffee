@@ -1,6 +1,6 @@
 {
   "name": "cirru-parser",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Parser for Cirru Grammer",
   "main": "src/parser.js",
   "scripts": {
@@ -8,15 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/jiyinyiyong/cirru-parser.coffee.git"
+    "url": "git://github.com/Cirru/cirru-parser.coffee.git"
   },
   "keywords": [
     "cirru",
     "parser"
   ],
   "author": "jiyinyiyong",
-  "license": "MIT",
-  "readmeFilename": "README.md",
-  "devDependencies": {},
-  "dependencies": {}
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "coffeeify": "~0.6.0"
+  },
+  "dependencies": {},
+  "bugs": {
+    "url": "https://github.com/Cirru/cirru-parser.coffee/issues"
+  },
+  "homepage": "http://repo.tiye.me/cirru-parser.coffee/"
 }
