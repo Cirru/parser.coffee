@@ -2,5 +2,5 @@
 require("calabash").do "task",
   "pkill -f doodle"
   'coffee -o src/ -wbc coffee/'
-  'watchify -o build/build.js src/live.js -v'
+  'cjsify -o build/build.js --inline-source-map -w coffee/live.coffee'
   "doodle build/ index.html cirru/ log:yes"
