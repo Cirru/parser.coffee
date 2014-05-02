@@ -1,5 +1,6 @@
 
 {Token} = require './token'
+{Exp} = require './exp'
 
 exports.tokenize = (line) ->
   inQuote = no
@@ -70,8 +71,8 @@ convertToExp = (list) ->
     while list.length > 0
       head = list.shift()
       if head.isLeftParen()
-        list = buildExp()
-        collection.push (new Exp)
+        piece = buildExp()
+        collection.push (new Exp piece)
       else if head.isRightParen()
         return collection
       else

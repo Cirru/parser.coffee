@@ -1,7 +1,8 @@
 
 {Char} = require './char'
 
-exports.Line = class
+exports.Line = class Line
+
   constructor: (opts) ->
     file = opts.file
     y = opts.y
@@ -11,6 +12,9 @@ exports.Line = class
 
   isEmpty: ->
     @line.length is 0
+
+  hasChild: ->
+    @line.length > 0
 
   isIndented: ->
     @getIndent() > 0
@@ -27,8 +31,12 @@ exports.Line = class
     Math.ceil step
 
   unindent: ->
-    @shift()
-    @shift() if @line[0].isBlank()
+    head = @shift()
+    if not head?
+      throw new Error "[Cirru Parser] cant unindent"
+    if not head.isBlank()
+      throw new Error "[Cirru Parser] #{head} is not blank"
+    @shift() if @line[0]?.isBlank()
 
   shift: ->
     @line.shift()

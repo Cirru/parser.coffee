@@ -1,9 +1,10 @@
 
-build/
-coffee/
-cirru/
-index.html
-*.coffee
-src/live.js
+/build/
+/coffee/
+/cirru/
+/ast/
+/css/
 
 /index.html
+/*.coffee
+/js/live.js

@@ -1,5 +1,6 @@
 
-exports.Token = class
+exports.Token = class Token
+
   constructor: (char) ->
     @_data = {}
     @_text = char.getText()

@@ -25,19 +25,15 @@ exports.parseBlock = parseBlock = (lines) ->
   cache.collection
 
 buildExp = (pieces) ->
-  collection = []
   funcOne = pieces[0]
-  if funcOne[0].isIndented()
-    list = funcOne.map (line) ->
-      line.unindent()
-    collection.push (buildExp list)
+
+  if funcOne.isIndented()
+    line.unindent() for line in pieces
+    return new Exp (parseBlock pieces)
   else
     head = tokenize funcOne
-    collection.push head...
-
-  for paraOne in pieces[1..]
-    list = paraOne.map (line) ->
-      line.unindent()
-    collection.push (buildExp list)
-
-  new Exp collection
+    linesAfter = pieces[1..]
+    line.unindent() for line in linesAfter
+    collection = parseBlock linesAfter
+    list = head.concat collection
+    return new Exp list

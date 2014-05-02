@@ -73,6 +73,8 @@ names = [
   'parentheses'
   'quote'
   'unfolding'
+  'html'
+  'spaces'
 ]
 
 test = (file) ->
@@ -90,7 +92,7 @@ test = (file) ->
     console.log ast
 
 target.test = ->
-  test for name in names
+  test name for name in names
 
 target.run = ->
   text 'demo'

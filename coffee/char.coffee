@@ -1,5 +1,6 @@
 
-exports.Char = class
+exports.Char = class Char
+
   constructor: (opts) ->
     @_text = opts.char
     @x = opts.x

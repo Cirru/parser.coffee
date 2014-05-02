@@ -21,8 +21,8 @@ body {
   background-color: white;
 }
 .source {
-  right: 0px;
+  left: 0px;
 }
 .target {
-  left: 0px;
+  right: 0px;
 }

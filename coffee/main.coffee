@@ -1,7 +1,5 @@
 
-# main task
-
-source_file = "./cirru/indent.cirru"
+source_file = "./cirru/demo.cirru"
 
 q = (query) ->
   document.querySelector query

@@ -1,8 +1,8 @@
 {
   "name": "cirru-parser",
-  "version": "0.7.1",
+  "version": "0.8.0-0",
   "description": "Parser for Cirru Grammer",
-  "main": "src/parser.js",
+  "main": "js/parser.js",
   "scripts": {
     "test": "coffee test.coffee"
   },

@@ -1,7 +1,8 @@
 
 {Token} = require './token'
 
-exports.Exp = class
+exports.Exp = class Exp
+
   constructor: (list) ->
     @_list = list
 
@@ -20,16 +21,21 @@ exports.Exp = class
   exposeList: ->
     @_list
 
+  map: (f) ->
+    @_list.map f
+
   resolveDollar: ->
     for node, index in @_list
       if node.isToken
         token = node
         if token.isDollar()
-          tokensAfter = @_list.splice (index + 1)
-          expAfter = new Exp tokensAfter
+          tokensAfter = @_list.splice index
+          expAfter = new Exp tokensAfter[1..]
           expAfter.resolveDollar()
           @_list.push expAfter
           break
+      else
+        node.resolveDollar()
 
   resolveComma: ->
     lastPlace = @_list.length - 1
