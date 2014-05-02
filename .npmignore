@@ -5,3 +5,5 @@ cirru/
 index.html
 *.coffee
 src/live.js
+
+/index.html

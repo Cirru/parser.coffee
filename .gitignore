@@ -1,5 +1,7 @@
 
 node_modules/*
 bower_components/*
-src/
+js/
 build/
+
+/index.html

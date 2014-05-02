@@ -15,8 +15,10 @@
     "parser"
   ],
   "author": "jiyinyiyong",
-  "license": "BSD-2-Clause",
-  "devDependencies": {},
+  "license": "MIT",
+  "devDependencies": {
+    "exorcist": "^0.1.6"
+  },
   "dependencies": {},
   "bugs": {
     "url": "https://github.com/Cirru/cirru-parser.coffee/issues"
