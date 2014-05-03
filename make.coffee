@@ -75,6 +75,7 @@ names = [
   'unfolding'
   'html'
   'spaces'
+  'comma'
 ]
 
 test = (file) ->

@@ -39,6 +39,7 @@ exports.Exp = class Exp
 
   resolveComma: ->
     lastPlace = @_list.length - 1
+    return if lastPlace < 0
     for index in [lastPlace...0]
       node = @_list[index]
       if node.isExp
@@ -51,3 +52,6 @@ exports.Exp = class Exp
               exp.resolveComma()
               body = exp.exposeList()[1..]
               @_list.splice index, 1, body...
+              continue
+
+        node.resolveComma()

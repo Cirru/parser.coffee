@@ -1,6 +1,6 @@
 {
   "name": "cirru-parser",
-  "version": "0.8.1-0",
+  "version": "0.8.1-1",
   "description": "Parser for Cirru Grammer",
   "main": "js/parser.js",
   "scripts": {
