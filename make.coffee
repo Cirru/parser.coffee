@@ -1,3 +1,4 @@
+#!/usr/bin/env coffee
 
 project = 'repo/cirru/parser'
 interval = interval: 300
