@@ -3,18 +3,23 @@
 
 {parseBlock} = require './tree'
 
+exports.inspect = require('./inspect').inspect
+
 parse = (text, path) ->
   text = text.trimRight()
   file = {text, path}
+
   lines = text
   .split("\n").map (line, y) ->
     new Line {line, y, file}
   .filter (line) ->
     line.hasChild()
   collection = parseBlock lines
+
   for exp in collection
     exp.resolveDollar()
     exp.resolveComma()
+
   collection
 
 short = (node) ->

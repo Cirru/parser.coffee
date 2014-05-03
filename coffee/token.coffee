@@ -4,8 +4,8 @@ exports.Token = class Token
   constructor: (char) ->
     @_data = {}
     @_text = char.getText()
-    @_data.sx = @_data.ex = char.x
-    @_data.sy = @_data.ey = char.y
+    @_sx = @_ex = char.x
+    @_sy = @_ey = char.y
 
     @isBare = yes
 
@@ -13,15 +13,12 @@ exports.Token = class Token
   isToken: yes
 
   setStart: (start) ->
-    @_data.sx = start.x
-    @_data.sy = start.y
+    @_sx = start.x
+    @_sy = start.y
 
   setEnd: (end) ->
-    @_data.ex = end.ex
-    @_data.ey = end.ey
-
-  add: (text) ->
-    @_text += text
+    @_ex = end.ex
+    @_ey = end.ey
 
   isComma: ->
     @isBare and (@_text is ',')
@@ -37,8 +34,14 @@ exports.Token = class Token
 
   addChar: (char) ->
     @_text += char.getText()
-    @_data.ex = char.x
-    @_data.ey = char.y
+    @_ex = char.x
+    @_ey = char.y
 
   getText: ->
     @_text
+
+  getStart: ->
+    x: @_sx, y: @_sy
+
+  getEnd: ->
+    x: @_ex, y: @_ey

@@ -1,6 +1,7 @@
 
 {Token} = require './token'
 {Exp} = require './exp'
+{inspect} = require './inspect'
 
 exports.tokenize = (line) ->
   inQuote = no
@@ -58,7 +59,7 @@ exports.tokenize = (line) ->
         cache.add char
 
   if inQuote or inEscape
-    message = "not closed at: #{char}"
+    message = "not closed at: \n#{inspect char}\n"
     throw new Error "[Cirru Parser]: #{message}"
 
   cache.giveOut()
