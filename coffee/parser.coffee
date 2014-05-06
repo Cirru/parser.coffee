@@ -28,6 +28,6 @@ short = (node) ->
 
 exports.parse = parse
 
-exports.pare = (code) ->
-  result = (parse code)
+exports.pare = (code, filename) ->
+  result = (parse code, filename)
   result.map short

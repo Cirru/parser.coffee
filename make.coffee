@@ -82,10 +82,11 @@ names = [
 test = (file) ->
   parser = require './coffee/parser'
 
-  code = cat "cirru/#{file}.cirru"
+  filename = "cirru/#{file}.cirru"
   wanting = (cat "ast/#{file}.json").trim()
 
-  ast = JSON.stringify (parser.pare code), null, 2
+  ast = parser.pare (cat filename), filename
+  ast = JSON.stringify ast, null, 2
 
   if ast is wanting
     console.log "ok! fine with: #{file}"
