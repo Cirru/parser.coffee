@@ -6,6 +6,7 @@ exports.Token = class Token
     @_text = char.getText()
     @_sx = @_ex = char.x
     @_sy = @_ey = char.y
+    @_file = char.file
 
     @isBare = yes
 
@@ -45,3 +46,12 @@ exports.Token = class Token
 
   getEnd: ->
     x: @_ex, y: @_ey
+
+  getFile: ->
+    @_file
+
+  firstChar: ->
+    text: @_text
+    x: @_sx
+    y: @_sy
+    file: @_file

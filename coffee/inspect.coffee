@@ -1,6 +1,6 @@
 
 exports.inspect = (char) ->
-  filename = char.file.text.path or '[anonym]'
+  filename = char.file.path or '[anonym]'
   loc = "#{filename}: #{char.y + 1}, #{char.x + 1}"
   line = char.file.text.split('\n')[char.y]
   hint = ""
