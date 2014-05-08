@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/Cirru/cirru-parser.coffee.git"
+    "url": "git://github.com/Cirru/cirru-parser.git"
   },
   "keywords": [
     "cirru",
@@ -22,7 +22,7 @@
   },
   "dependencies": {},
   "bugs": {
-    "url": "https://github.com/Cirru/cirru-parser.coffee/issues"
+    "url": "https://github.com/Cirru/cirru-parser/issues"
   },
-  "homepage": "http://repo.tiye.me/cirru-parser.coffee/"
+  "homepage": "http://repo.tiye.me/cirru-parser/"
 }
