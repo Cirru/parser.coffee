@@ -1,6 +1,6 @@
 
 {Token} = require './token'
-{Exp} = require './exp'
+{Expr} = require './expr'
 {caution} = require './caution'
 
 exports.tokenize = (line) ->
@@ -63,17 +63,17 @@ exports.tokenize = (line) ->
     throw new Error "[Cirru Parser]: #{message}"
 
   cache.giveOut()
-  convertToExp cache.tokens
+  convertToExpr cache.tokens
 
-convertToExp = (list) ->
-  buildExp = ->
+convertToExpr = (list) ->
+  buildExpr = ->
     collection = []
 
     while list.length > 0
       head = list.shift()
       if head.isLeftParen()
-        piece = buildExp()
-        collection.push (new Exp piece)
+        piece = buildExpr()
+        collection.push (new Expr piece)
       else if head.isRightParen()
         return collection
       else
@@ -81,4 +81,4 @@ convertToExp = (list) ->
 
     return collection
 
-  return buildExp()
+  return buildExpr()

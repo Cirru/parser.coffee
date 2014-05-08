@@ -16,18 +16,18 @@ parse = (text, path) ->
     line.hasChild()
   collection = parseBlock lines
 
-  for exp in collection
-    exp.resolveDollar()
-    exp.resolveComma()
+  for expr in collection
+    expr.resolveDollar()
+    expr.resolveComma()
 
   collection
 
 short = (node) ->
-  if node.isExp then node.map short
+  if node.isExpr then node.map short
   else node.getText()
 
 stand = (node) ->
-  if node.isExp then node.map stand
+  if node.isExpr then node.map stand
   else node.getStand()
 
 exports.parse = (code, filename) ->

@@ -1,12 +1,12 @@
 
 {Token} = require './token'
 
-exports.Exp = class Exp
+exports.Expr = class Expr
 
   constructor: (list) ->
     @_list = list
 
-  isExp: yes
+  isExpr: yes
   isToken: no
 
   isEmpty: ->
@@ -30,9 +30,9 @@ exports.Exp = class Exp
         token = node
         if token.isDollar()
           tokensAfter = @_list.splice index
-          expAfter = new Exp tokensAfter[1..]
-          expAfter.resolveDollar()
-          @_list.push expAfter
+          exprAfter = new Expr tokensAfter[1..]
+          exprAfter.resolveDollar()
+          @_list.push exprAfter
           break
       else
         node.resolveDollar()
@@ -42,15 +42,15 @@ exports.Exp = class Exp
     return if lastPlace < 0
     for index in [lastPlace...0]
       node = @_list[index]
-      if node.isExp
-        exp = node
-        if exp.hasChild()
-          head = exp.getFirst()
+      if node.isExpr
+        expr = node
+        if expr.hasChild()
+          head = expr.getFirst()
           if head.isToken
             token = head
             if token.isComma()
-              exp.resolveComma()
-              body = exp.exposeList()[1..]
+              expr.resolveComma()
+              body = expr.exposeList()[1..]
               @_list.splice index, 1, body...
               continue
 

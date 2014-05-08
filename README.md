@@ -82,7 +82,7 @@ It is divided into several steps:
 * Wrap code into classes: `line.coffee char.coffee`
 * Parse indentations: `tree.coffee`
 * Tokenize inline code: `tokenize.coffee token.coffee`
-* Resolve `$` and `,` in tree: `exp.coffee`
+* Resolve `$` and `,` in tree: `expr.coffee`
 
 ### Development
 

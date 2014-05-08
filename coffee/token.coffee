@@ -10,7 +10,7 @@ exports.Token = class Token
 
     @isBare = yes
 
-  isExp: no
+  isExpr: no
   isToken: yes
 
   setStart: (start) ->

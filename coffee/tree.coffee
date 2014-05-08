@@ -1,5 +1,5 @@
 
-{Exp} = require './exp'
+{Expr} = require './expr'
 {tokenize} = require './tokenize'
 
 exports.parseBlock = parseBlock = (lines) ->
@@ -11,7 +11,7 @@ exports.parseBlock = parseBlock = (lines) ->
       @_data.length is 0
     giveOut: ->
       if @_data.length > 0
-        @collection.push (buildExp @_data)
+        @collection.push (buildExpr @_data)
         @_data = []
     push: (line) ->
       @_data.push line
@@ -24,16 +24,16 @@ exports.parseBlock = parseBlock = (lines) ->
 
   cache.collection
 
-buildExp = (pieces) ->
+buildExpr = (pieces) ->
   funcOne = pieces[0]
 
   if funcOne.isIndented()
     line.unindent() for line in pieces
-    return new Exp (parseBlock pieces)
+    return new Expr (parseBlock pieces)
   else
     head = tokenize funcOne
     linesAfter = pieces[1..]
     line.unindent() for line in linesAfter
     collection = parseBlock linesAfter
     list = head.concat collection
-    return new Exp list
+    return new Expr list
