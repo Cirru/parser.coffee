@@ -1,70 +1,69 @@
 #!/usr/bin/env coffee
-
 project = 'repo/cirru/parser'
-interval = interval: 300
-watch = no
 
 require 'shelljs/make'
-fs = require 'fs'
-station = require 'devtools-reloader-station'
-browserify = require 'browserify'
-exorcist = require 'exorcist'
-{renderer} = require 'cirru-html'
+path = require 'path'
 
-startTime = (new Date).getTime()
-process.on 'exit', ->
-  now = (new Date).getTime()
-  duration = (now - startTime) / 1000
-  console.log "\nfinished in #{duration}s"
-
-reload = -> station.reload project if watch
-
-compileCoffee = (name, callback) ->
-  exec "coffee -o js/ -bc coffee/#{name}", ->
-    console.log "done: coffee, compiled coffee/#{name}"
-    do callback
-
-packJS = ->
-  bundle = browserify ['./js/main']
-  .bundle debug: yes
-  bundle.pipe (exorcist 'build/build.js.map')
-  .pipe (fs.createWriteStream 'build/build.js', 'utf8')
-  bundle.on 'end', ->
-    console.log 'done: browserify'
-    do reload
+mission = require 'mission'
+mission.time()
 
 target.folder = ->
-  mkdir '-p', 'cirru', 'coffee', 'js', 'build', 'css'
-  exec 'touch cirru/index.cirru css/style.css'
-  exec 'touch coffee/main.coffee'
-  exec 'touch README.md .gitignore .npmignore'
+  mission.tree
+    '.gitignore': ''
+    'README.md': ''
+    js: {}
+    build: {}
+    cirru: {'index.cirru': ''}
+    coffee: {'main.coffee': ''}
+    css: {'style.css': ''}
 
-target.html = ->
-  file = 'cirru/index.cirru'
-  render = renderer (cat file), '@filename': file
-  html = render()
-  fs.writeFile 'index.html', html, 'utf8', (err) ->
-    console.log 'done: cirru'
-    do reload
+target.coffee = ->
+  mission.coffee
+    find: /\.coffee$/, from: 'coffee/', to: 'js/', extname: '.js'
+    options:
+      bare: yes
 
-target.js = ->
-  exec 'coffee -o js/ -bc coffee/'
+cirru = ->
+  mission.cirru
+    file: 'index.cirru', from: 'cirru/', to: './', extname: '.html'
+
+browserify = (callback) ->
+  mission.browserify
+    file: 'main.js', from: 'js/', to: 'build/', done: callback
+
+target.cirru = -> cirru()
+target.browserify = -> browserify()
 
 target.compile = ->
-  target.html()
-  exec 'coffee -o js/ -bc coffee/', ->
-    packJS()
+  cirru()
+  target.coffee yes
+  browserify()
 
 target.watch = ->
-  watch = yes
-  fs.watch 'cirru/', interval, ->
-    target.html()
-  fs.watch 'coffee/', interval, (type, name) ->
-    if type is 'change'
-      compileCoffee name, ->
-        do packJS
+  station = mission.reload()
 
-  station.start()
+  mission.watch
+    files: ['cirru/', 'coffee/']
+    trigger: (filepath, extname) ->
+      switch extname
+        when '.cirru'
+          cirru()
+          station.reload project
+        when '.coffee'
+          filepath = path.relative 'coffee/', filepath
+          mission.coffee
+            file: filepath, from: 'coffee/', to: 'js/', extname: '.js'
+            options:
+              bare: yes
+          browserify ->
+            station.reload project
+
+target.pre = ->
+  target.compile()
+  mission.bump
+    file: 'package.json'
+    options:
+      at: 'prerelease'
 
 names = [
   'demo'
