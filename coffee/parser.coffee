@@ -3,7 +3,7 @@
 
 {parseBlock} = require './tree'
 
-exports.inspect = require('./inspect').inspect
+exports.caution = require('./caution').caution
 
 parse = (text, path) ->
   text = text.trimRight()

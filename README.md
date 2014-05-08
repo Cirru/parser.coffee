@@ -12,12 +12,12 @@ npm install --save cirru-parser
 ```
 
 ```coffee
-{parse, pare, inspect} = require 'cirru-parser'
+{parse, pare, caution} = require 'cirru-parser'
 
 syntaxTree = parse code, filename
 simplifiedTree = pare code, filename
 
-info = inspect char
+info = caution char
 ```
 
 * `parse`:
@@ -45,13 +45,13 @@ And expressions hsre are just nesting tokens with arrays, like:
 `pare` of short for `parse`, `filename` is optional.
 
 `simplifiedTree` does not contain informations,
-like line number, file content, that may be needed in inspecting.
+like line numbers, file content, which are needed in `caution`.
 
 A token returns from `pare` are only the `text` field of a tree.
 
-* `inspect`
+* `caution`
 
-`inspect` is for generating message about the location that throws error.
+`caution` is for generating message about the location that throws error.
 `char` is a sub class of `class Char` defined at `coffee/char.coffee`.
 
 ### Live demo
@@ -108,7 +108,15 @@ but compile and watch the code first:
 
 ### Changelog
 
-`0.8` prefer `pare` to `parseShort`.
+#### `0.9`
+
+* changed `inspect` to `caution` to fix error
+* changed syntax tree(`.parse`) format
+
+#### `0.8`
+
+* prefer `pare` to `parseShort`.
+* add `inspect`
 
 `0.5` changed the `parseShort` API.
 
