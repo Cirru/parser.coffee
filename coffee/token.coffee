@@ -50,8 +50,11 @@ exports.Token = class Token
   getFile: ->
     @_file
 
-  firstChar: ->
+  getStand: ->
     text: @_text
     x: @_sx
     y: @_sy
     file: @_file
+    end:
+      x: @_ex
+      y: @_ey

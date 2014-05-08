@@ -24,38 +24,30 @@ info = inspect char
 
 Parse `code` in Cirru grammar, `filename` is optional:
 
+A token in `syntaxTree` is like:
 
-`syntaxTree` is a class-based representation of Cirru's syntax tree.
-An example is like:
-
-```
-[
-  Exp [
-    Token
-    Exp [
-      Exp [
-        Token
-        Token
-      ]
-      Token
-    ]
-  ]
-]
+```coffee
+text: 'get'
+x: 0
+y: 0
+end:
+  x: 1
+  y: 1
+file:
+  path: 'a.cirru'
+  text: 'code'
 ```
 
-Go to [`coffee/`][coffee] and read `char.coffee` and `exp.coffee` if you need details.
-
-
-[coffee]: https://github.com/Cirru/cirru-parser/tree/master/coffee
-
+And expressions hsre are just nesting tokens with arrays, like:
 
 * `pare`:
 
 `pare` of short for `parse`, `filename` is optional.
 
-
 `simplifiedTree` does not contain informations,
 like line number, file content, that may be needed in inspecting.
+
+A token returns from `pare` are only the `text` field of a tree.
 
 * `inspect`
 

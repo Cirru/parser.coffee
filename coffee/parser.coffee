@@ -26,8 +26,12 @@ short = (node) ->
   if node.isExp then node.map short
   else node.getText()
 
-exports.parse = parse
+stand = (node) ->
+  if node.isExp then node.map stand
+  else node.getStand()
+
+exports.parse = (code, filename) ->
+  (parse code, filename).map stand
 
 exports.pare = (code, filename) ->
-  result = (parse code, filename)
-  result.map short
+  (parse code, filename).map short
