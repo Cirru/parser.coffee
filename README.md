@@ -35,12 +35,9 @@ token =
   text: 'get'
   x: 0
   y: 0
-  end:
-    x: 1
-    y: 1
-  file:
-    path: 'a.cirru'
-    text: 'code'
+  $x: 1
+  $y: 1
+  path: 'a.cirru'
 ```
 
 And expressions here are just tokens in arrays, like:

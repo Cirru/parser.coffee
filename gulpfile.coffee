@@ -184,7 +184,7 @@ gulp.task 'test', ->
   ]
 
   test = (file) ->
-    parser = require './coffee/parser'
+    parser = require './js/parser'
 
     filename = "cirru/#{file}.cirru"
     wanting = (fs.readFileSync "ast/#{file}.json", 'utf8').trim()
