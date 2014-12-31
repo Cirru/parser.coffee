@@ -1,11 +1,8 @@
 
-/build/
-/coffee/
+/build
+/source
 /cirru/
 /ast/
-/css/
 
 /index.html
-/*.coffee
-/js/live.js
-/html/
+/gulpfile.coffee

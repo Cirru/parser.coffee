@@ -4,7 +4,7 @@ source_file = "./cirru/folding.cirru"
 q = (query) ->
   document.querySelector query
 
-cirru = require "./parser"
+cirru = require "./cirru/parser"
 req = new XMLHttpRequest
 req.open "get", source_file
 req.send()
