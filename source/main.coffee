@@ -1,5 +1,5 @@
 
-source_file = "./cirru/folding.cirru"
+source_file = "./cirru/line.cirru"
 
 q = (query) ->
   document.querySelector query

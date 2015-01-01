@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "browserify": "^5.10.1",
+    "cirru-json": "0.0.9",
     "coffee-script": "^1.7.1",
     "del": "^0.1.3",
     "gulp": "^3.8.7",
@@ -21,6 +22,7 @@
     "gulp-uglify": "^0.3.1",
     "gulp-wait": "0.0.2",
     "gulp-watch": "^0.6.9",
+    "lodash": "^2.4.1",
     "make-filetree": "0.0.2",
     "rsyncwrapper": "^0.4.1",
     "run-sequence": "^0.3.6",

@@ -1,9 +1,12 @@
 
 gulp = require 'gulp'
 
-project = 'cirru-parser'
+project = 'Cirru/parser'
 dev = yes
-libraries = []
+libraries = [
+  'cirru-json'
+  'lodash'
+]
 
 gulp.task 'folder', (cb) ->
   filetree = require 'make-filetree'

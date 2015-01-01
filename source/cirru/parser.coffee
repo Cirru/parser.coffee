@@ -1,15 +1,33 @@
 
 tree = require './tree'
+lodash = require 'lodash'
+json = require 'cirru-json'
 
 exports.parse = (code, filename) ->
+  window.debugData = []
   buffer = null
 
   state =
-    name: 'newline'
+    name: 'indent'
     x: 1
     y: 1
+    level: 1 # inside list
+    indent: 0
+    indented: 0 # counter
+    nest: 0 # parentheses
     path: filename
   parse [], buffer, state, code
+  window.debugData = json.generate window.debugData
+
+exports.pare = (code, filename) ->
+  res = exports.parse code, filename
+
+  shorten = (xs) ->
+    if Array.isArray xs
+    then xs.map shorten
+    else xs.text
+
+  shorten res
 
 # eof
 
@@ -96,6 +114,8 @@ _space_open = (xs, buffer, state, code) ->
 
 _space_close = (xs, buffer, state, code) ->
   state.nesting -= 1
+  if state.nesting < 0
+    throw new Error 'close at space'
   state.x += 1
   parse xs, buffer, state, code[1..]
 
@@ -144,8 +164,9 @@ _token_close = (xs, buffer, state, code) ->
   buffer.$x = state.x
   buffer.$y = state.y
   xs = tree.insert xs, state.level, buffer
-  state.x += 1
   buffer = null
+  state.x += 1
+  state.nesting -= 1
   parse xs, buffer, state, code[1..]
 
 _token_quote = (xs, buffer, state, code) ->
@@ -163,46 +184,40 @@ _token_else = (xs, buffer, state, code) ->
 _indent_space = (xs, buffer, state, code) ->
   state.indented += 1
   state.x += 1
-  parse xs, buffer, state, code
+  parse xs, buffer, state, code[1..]
 
 _indent_newilne = (xs, buffer, state, code) ->
   state.x = 1
   state.y += 1
   state.indented = 0
-  parse xs, buffer, state, code
-
-_indent_quote = (xs, buffer, state, code) ->
-  state.name = 'string'
-  state = tree.recordIndent state
-  state.x += 1
-  parse xs, buffer, state, code
-
-_indent_open = (xs, buffer, state, code) ->
-  state.name = 'space'
-  state = tree.recordIndent state
-  state.x += 1
-  parse xs, buffer, state, code
+  parse xs, buffer, state, code[1..]
 
 _indent_close = (xs, buffer, state, code) ->
   throw new Error 'close parenthesis at indent'
 
 _indent_else = (xs, buffer, state, code) ->
-  state.name = 'token'
-  buffer =
-    text: code[0]
-    x: state.x
-    y: state.y
-    path: state.path
-  state.x += 1
+  state.name = 'space'
+  if (state.indented % 2) is 1
+    throw new Error 'odd indentation'
+  indented = state.indented / 2
+  diff = indented - state.indent
+
+  if diff >= 0
+    nesting = tree.createNesting (diff + 1)
+    xs = tree.insert xs, (state.level - 1), nesting
+  state.level += diff
+  state.indent = indented
   parse xs, buffer, state, code
 
 # parse
 
 parse = (args...) ->
+  [xs, buffer, state, code] = args
+  scope = {xs, buffer, state, code}
+  window.debugData.push (lodash.cloneDeep scope)
   eof = code.length is 0
   char = code[0]
-  [xs, buffer, state, code] = args
-  switch state
+  switch state.name
     when 'escape'
       if eof      then _escape_eof        args...
       else switch char
@@ -216,7 +231,7 @@ parse = (args...) ->
         when '\\' then _string_backslash  args...
         when '\n' then _string_newline    args...
         when '"'  then _string_quote      args...
-        else      then _string_else       args...
+        else           _string_else       args...
     when 'space'
       if eof      then _space_eof         args...
       else switch char
@@ -240,7 +255,5 @@ parse = (args...) ->
       else switch char
         when ' '  then _indent_space      args...
         when '\n' then _indent_newilne    args...
-        when '"'  then _indent_quote      args...
-        when '('  then _indent_open       args...
         when ')'  then _indent_close      args...
         else           _indent_else       args...
