@@ -5,7 +5,7 @@ Cirru Parser
 Cirru is an indentation-based grammar.
 You may use it to create your own DSLs or scripting languages.
 
-The latest parser is written in Go, you may check out [here][go].
+You may also find another implementation written in [Go][go].
 
 [go]: https://github.com/Cirru/parser
 
@@ -16,7 +16,7 @@ npm install --save cirru-parser
 ```
 
 ```coffee
-{parse, pare, caution} = require 'cirru-parser'
+{parse, pare} = require 'cirru-parser'
 
 syntaxTree = parse code, filename
 simplifiedTree = pare code, filename
@@ -65,11 +65,6 @@ like line numbers, file content, which are needed in `caution`.
 
 A token from `pare` is a string, i.e. the `text` field of parsing results.
 
-* `caution(char)`:
-
-`caution` is for generating messages of the location that throws error.
-`char` is a sub class of `class Char` defined at `coffee/char.coffee`.
-
 ### Live demo
 
 Demo: http://repo.cirru.org/parser/ .
@@ -92,15 +87,11 @@ For short, there are then rules of Cirru:
 
 ### Parsing
 
-It can be divided into several steps:
+Here's a Gist showing how it's parsed(not including the steps solving `$` and `,`):
 
-* Define main process and export methods: `parser.coffee`
-* Wrap code into classes: `line.coffee char.coffee`
-* Parse indentations: `tree.coffee`
-* Tokenize inline code: `tokenize.coffee token.coffee`
-* Resolve `$` and `,` in tree: `expr.coffee`
+https://gist.github.com/jiyinyiyong/bdda3f616ff0f1bea917
 
-In the [parser written in Go][go], there's a new solution, you may [check it][sf].
+This method was developed in [the Go version][go], you may [check it out here][sf].
 
 [sf]: http://blog.segmentfault.com/jiyinyiyong/1190000000636303
 
@@ -109,23 +100,23 @@ In the [parser written in Go][go], there's a new solution, you may [check it][sf
 Run tests:
 
 ```
-./make.coffee test
-```
-
-To run a specified test, edit parameter in `target.run` and:
-
-```
-./make.coffee run
+gulp test
 ```
 
 Also you may debug `index.html` in a browser after compiling the code:
 
 ```
-./make.coffee compile
-./make.coffee watch
+npm i
+gulp start
+# view generated index.html in a web server
 ```
 
 ### Changelog
+
+#### 0.10.0
+
+* Rewritten with new solution from Go
+* drop caution
 
 #### `0.9`
 

@@ -1,10 +1,10 @@
 
 tree = require './tree'
-lodash = require 'lodash'
-json = require 'cirru-json'
+# lodash = require 'lodash'
+# json = require 'cirru-json'
 
 exports.parse = (code, filename) ->
-  window.debugData = []
+  # window.debugData = []
   buffer = null
 
   state =
@@ -17,7 +17,9 @@ exports.parse = (code, filename) ->
     nest: 0 # parentheses
     path: filename
   res = parse [], buffer, state, code
-  window.debugData = json.generate window.debugData
+  res = res.map tree.resolveDollar
+  res = res.map tree.resolveComma
+  # window.debugData = json.generate window.debugData
   res
 
 exports.pare = (code, filename) ->
@@ -227,7 +229,7 @@ _indent_else = (xs, buffer, state, code) ->
 parse = (args...) ->
   [xs, buffer, state, code] = args
   scope = {code, xs, buffer, state}
-  window.debugData.push (lodash.cloneDeep scope)
+  # window.debugData.push (lodash.cloneDeep scope)
   eof = code.length is 0
   char = code[0]
   switch state.name
