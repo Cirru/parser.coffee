@@ -1,14 +1,19 @@
 
-exports.insert = insert = (xs, level, buffer) ->
+exports.appendBuffer = appendBuffer = (xs, level, buffer) ->
   if level is 0
-    xs[...-1].concat [buffer]
+    xs.concat [buffer]
   else
     last = xs.length - 1
-    res = insert xs[last], (level - 1), buffer
-    # tricky code: prevent list from expanding
-    if Array.isArray
-    then xs[...-1].concat [res]
-    else xs[...-1].concat res
+    res = appendBuffer xs[last], (level - 1), buffer
+    xs[...-1].concat [res]
+
+exports.appendList = appendList = (xs, level, list) ->
+  if level is 0
+    xs.concat [list]
+  else
+    last = xs.length - 1
+    res = appendList xs[last], (level - 1), list
+    xs[...-1].concat [res]
 
 exports.createNesting = (n) ->
   create = (xs, n) ->

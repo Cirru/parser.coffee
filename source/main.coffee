@@ -1,5 +1,5 @@
 
-source_file = "./cirru/line.cirru"
+source_file = "./cirru/html.cirru"
 
 q = (query) ->
   document.querySelector query

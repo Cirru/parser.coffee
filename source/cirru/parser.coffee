@@ -16,8 +16,9 @@ exports.parse = (code, filename) ->
     indented: 0 # counter
     nest: 0 # parentheses
     path: filename
-  parse [], buffer, state, code
+  res = parse [], buffer, state, code
   window.debugData = json.generate window.debugData
+  res
 
 exports.pare = (code, filename) ->
   res = exports.parse code, filename
@@ -43,7 +44,7 @@ _space_eof = (xs, buffer, state, code) ->
 _token_eof = (xs, buffer, state, code) ->
   buffer.$x = state.x
   buffer.$y = state.y
-  xs = tree.insert xs, state.level, buffer
+  xs = tree.appendBuffer xs, state.level, buffer
   buffer = null
   xs
 
@@ -76,6 +77,7 @@ _escape_else = (xs, buffer, state, code) ->
 # string
 
 _string_backslash = (xs, buffer, state, code) ->
+  state.name = 'escape'
   state.x += 1
   parse xs, buffer, state, code[1..]
 
@@ -99,7 +101,7 @@ _space_space = (xs, buffer, state, code) ->
   parse xs, buffer, state, code[1..]
 
 _space_newline = (xs, buffer, state, code) ->
-  if state.nesting isnt 0
+  if state.nest isnt 0
     throw Error 'incorrect nesting'
   state.name = 'indent'
   state.x = 0
@@ -108,19 +110,28 @@ _space_newline = (xs, buffer, state, code) ->
   parse xs, buffer, state, code[1..]
 
 _space_open = (xs, buffer, state, code) ->
-  state.nesting += 1
+  nesting = tree.createNesting(1)
+  xs = tree.appendList xs, state.level, nesting
+  state.nest += 1
+  state.level += 1
   state.x += 1
   parse xs, buffer, state, code[1..]
 
 _space_close = (xs, buffer, state, code) ->
-  state.nesting -= 1
-  if state.nesting < 0
+  state.nest -= 1
+  state.level -= 1
+  if state.nest < 0
     throw new Error 'close at space'
   state.x += 1
   parse xs, buffer, state, code[1..]
 
 _space_quote = (xs, buffer, state, code) ->
   state.name = 'string'
+  buffer =
+    text: ''
+    x: state.x
+    y: state.y
+    path: state.path
   state.x += 1
   parse xs, buffer, state, code[1..]
 
@@ -140,7 +151,7 @@ _token_space = (xs, buffer, state, code) ->
   state.name = 'space'
   buffer.$x = state.x
   buffer.$y = state.y
-  xs = tree.insert xs, state.level, buffer
+  xs = tree.appendBuffer xs, state.level, buffer
   state.x += 1
   buffer = null
   parse xs, buffer, state, code[1..]
@@ -149,7 +160,7 @@ _token_newline = (xs, buffer, state, code) ->
   state.name = 'indent'
   buffer.$x = state.x
   buffer.$y = state.y
-  xs = tree.insert xs, state.level, buffer
+  xs = tree.appendBuffer xs, state.level, buffer
   state.indented = 0
   state.x = 1
   state.y += 1
@@ -163,11 +174,9 @@ _token_close = (xs, buffer, state, code) ->
   state.name = 'space'
   buffer.$x = state.x
   buffer.$y = state.y
-  xs = tree.insert xs, state.level, buffer
+  xs = tree.appendBuffer xs, state.level, buffer
   buffer = null
-  state.x += 1
-  state.nesting -= 1
-  parse xs, buffer, state, code[1..]
+  parse xs, buffer, state, code
 
 _token_quote = (xs, buffer, state, code) ->
   state.name = 'string'
@@ -202,9 +211,13 @@ _indent_else = (xs, buffer, state, code) ->
   indented = state.indented / 2
   diff = indented - state.indent
 
-  if diff >= 0
-    nesting = tree.createNesting (diff + 1)
-    xs = tree.insert xs, (state.level - 1), nesting
+  if diff <= 0
+    nesting = tree.createNesting 1
+    xs = tree.appendList xs, (state.level + diff - 1), nesting
+  else if diff > 0
+    nesting = tree.createNesting diff
+    xs = tree.appendList xs, state.level, nesting
+
   state.level += diff
   state.indent = indented
   parse xs, buffer, state, code
@@ -213,7 +226,7 @@ _indent_else = (xs, buffer, state, code) ->
 
 parse = (args...) ->
   [xs, buffer, state, code] = args
-  scope = {xs, buffer, state, code}
+  scope = {code, xs, buffer, state}
   window.debugData.push (lodash.cloneDeep scope)
   eof = code.length is 0
   char = code[0]
