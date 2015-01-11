@@ -35,8 +35,8 @@ token =
   text: 'get'
   x: 0
   y: 0
-  $x: 1
-  $y: 1
+  ex: 1
+  ey: 1
   path: 'a.cirru'
 ```
 
@@ -113,22 +113,14 @@ gulp start
 
 ### Changelog
 
+#### 0.10.1
+
+* switch to `ex, ey` from `$x, $y`
+
 #### 0.10.0
 
 * Rewritten with new solution from Go
 * drop caution
-
-#### `0.9`
-
-* changed `inspect` to `caution` to fix error
-* changed syntax tree(`.parse`) format
-
-#### `0.8`
-
-* prefer `pare` to `parseShort`.
-* add `inspect`
-
-`0.5` changed the `parseShort` API.
 
 ### License
 

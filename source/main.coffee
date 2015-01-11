@@ -21,3 +21,6 @@ paint = (text) ->
 
 q("textarea.source").onkeyup = ->
   paint @value
+
+q("textarea.source").onchange = ->
+  paint @value

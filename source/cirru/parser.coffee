@@ -44,8 +44,8 @@ _space_eof = (xs, buffer, state, code) ->
   xs
 
 _token_eof = (xs, buffer, state, code) ->
-  buffer.$x = state.x
-  buffer.$y = state.y
+  buffer.ex = state.x
+  buffer.ey = state.y
   xs = tree.appendBuffer xs, state.level, buffer
   buffer = null
   xs
@@ -106,8 +106,8 @@ _space_newline = (xs, buffer, state, code) ->
   if state.nest isnt 0
     throw Error 'incorrect nesting'
   state.name = 'indent'
-  state.x = 0
-  state.y = 1
+  state.x = 1
+  state.y += 1
   state.indented = 0
   parse xs, buffer, state, code[1..]
 
@@ -151,8 +151,8 @@ _space_else = (xs, buffer, state, code) ->
 
 _token_space = (xs, buffer, state, code) ->
   state.name = 'space'
-  buffer.$x = state.x
-  buffer.$y = state.y
+  buffer.ex = state.x
+  buffer.ey = state.y
   xs = tree.appendBuffer xs, state.level, buffer
   state.x += 1
   buffer = null
@@ -160,8 +160,8 @@ _token_space = (xs, buffer, state, code) ->
 
 _token_newline = (xs, buffer, state, code) ->
   state.name = 'indent'
-  buffer.$x = state.x
-  buffer.$y = state.y
+  buffer.ex = state.x
+  buffer.ey = state.y
   xs = tree.appendBuffer xs, state.level, buffer
   state.indented = 0
   state.x = 1
@@ -174,8 +174,8 @@ _token_open = (xs, buffer, state, code) ->
 
 _token_close = (xs, buffer, state, code) ->
   state.name = 'space'
-  buffer.$x = state.x
-  buffer.$y = state.y
+  buffer.ex = state.x
+  buffer.ey = state.y
   xs = tree.appendBuffer xs, state.level, buffer
   buffer = null
   parse xs, buffer, state, code
