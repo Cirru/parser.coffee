@@ -16,7 +16,10 @@ exports.parse = (code, filename) ->
     indented: 0 # counter
     nest: 0 # parentheses
     path: filename
-  res = parse [], buffer, state, code
+  xs = []
+  while code.length > 0
+    [xs, buffer, state, code] = parse xs, buffer, state, code
+  res = parse xs, buffer, state, code
   res = res.map tree.resolveDollar
   res = res.map tree.resolveComma
   # window.debugData = json.generate window.debugData
@@ -62,26 +65,26 @@ _escape_n = (xs, buffer, state, code) ->
   state.x += 1
   buffer.text += '\n'
   state.name = 'string'
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _escape_t = (xs, buffer, state, code) ->
   state.x += 1
   buffer.text += '\t'
   state.name = 'string'
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _escape_else = (xs, buffer, state, code) ->
   state.x += 1
   buffer.text += code[0]
   state.name = 'string'
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 # string
 
 _string_backslash = (xs, buffer, state, code) ->
   state.name = 'escape'
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _string_newline = (xs, buffer, state, code) ->
   throw new Error 'newline in a string'
@@ -89,18 +92,18 @@ _string_newline = (xs, buffer, state, code) ->
 _string_quote = (xs, buffer, state, code) ->
   state.name = 'token'
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _string_else = (xs, buffer, state, code) ->
   state.x += 1
   buffer.text += code[0]
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 # space
 
 _space_space = (xs, buffer, state, code) ->
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _space_newline = (xs, buffer, state, code) ->
   if state.nest isnt 0
@@ -109,7 +112,7 @@ _space_newline = (xs, buffer, state, code) ->
   state.x = 1
   state.y += 1
   state.indented = 0
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _space_open = (xs, buffer, state, code) ->
   nesting = tree.createNesting(1)
@@ -117,7 +120,7 @@ _space_open = (xs, buffer, state, code) ->
   state.nest += 1
   state.level += 1
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _space_close = (xs, buffer, state, code) ->
   state.nest -= 1
@@ -125,7 +128,7 @@ _space_close = (xs, buffer, state, code) ->
   if state.nest < 0
     throw new Error 'close at space'
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _space_quote = (xs, buffer, state, code) ->
   state.name = 'string'
@@ -135,7 +138,7 @@ _space_quote = (xs, buffer, state, code) ->
     y: state.y
     path: state.path
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _space_else = (xs, buffer, state, code) ->
   state.name = 'token'
@@ -145,7 +148,7 @@ _space_else = (xs, buffer, state, code) ->
     y: state.y
     path: state.path
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 # token
 
@@ -156,7 +159,7 @@ _token_space = (xs, buffer, state, code) ->
   xs = tree.appendBuffer xs, state.level, buffer
   state.x += 1
   buffer = null
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _token_newline = (xs, buffer, state, code) ->
   state.name = 'indent'
@@ -167,7 +170,7 @@ _token_newline = (xs, buffer, state, code) ->
   state.x = 1
   state.y += 1
   buffer = null
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _token_open = (xs, buffer, state, code) ->
   throw new Error 'open parenthesis in token'
@@ -178,30 +181,30 @@ _token_close = (xs, buffer, state, code) ->
   buffer.ey = state.y
   xs = tree.appendBuffer xs, state.level, buffer
   buffer = null
-  parse xs, buffer, state, code
+  [xs, buffer, state, code]
 
 _token_quote = (xs, buffer, state, code) ->
   state.name = 'string'
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _token_else = (xs, buffer, state, code) ->
   buffer.text += code[0]
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 # indent
 
 _indent_space = (xs, buffer, state, code) ->
   state.indented += 1
   state.x += 1
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _indent_newilne = (xs, buffer, state, code) ->
   state.x = 1
   state.y += 1
   state.indented = 0
-  parse xs, buffer, state, code[1..]
+  [xs, buffer, state, code[1..]]
 
 _indent_close = (xs, buffer, state, code) ->
   throw new Error 'close parenthesis at indent'
@@ -222,7 +225,7 @@ _indent_else = (xs, buffer, state, code) ->
 
   state.level += diff
   state.indent = indented
-  parse xs, buffer, state, code
+  [xs, buffer, state, code]
 
 # parse
 
