@@ -3,3 +3,8 @@
 /index.html
 /gulpfile.cirru
 /webpack.*
+/template.cirru
+/test.cirru
+/ast
+/cirru
+/src

@@ -1,8 +1,8 @@
 {
   "name": "cirru-parser",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "description": "Parser of Cirru Grammer",
-  "main": "./js/parser.js",
+  "main": "./lib/parser.js",
   "scripts": {
     "test": "cirru-script test.cirru"
   },
@@ -24,12 +24,12 @@
     "rsyncwrapper": "^0.4.2",
     "run-sequence": "^1.0.2",
     "stir-template": "^0.1.4",
+    "textarea-indent": "0.0.2",
     "webpack": "^1.8.5",
     "webpack-dev-server": "^1.8.0"
   },
   "dependencies": {
-    "tail-call": "0.0.1",
-    "textarea-indent": "0.0.2"
+    "tail-call": "0.0.1"
   },
   "repository": {
     "type": "git",
