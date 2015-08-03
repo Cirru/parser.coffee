@@ -1,8 +1,5 @@
 
 /build
-/source
-/cirru/
-/ast/
-
 /index.html
-/gulpfile.coffee
+/gulpfile.cirru
+/webpack.*

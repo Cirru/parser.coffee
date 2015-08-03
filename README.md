@@ -5,9 +5,7 @@ Cirru Parser
 Cirru is an indentation-based grammar.
 You may use it to create your own DSLs or scripting languages.
 
-You may also find another implementation written in [Go][go].
-
-[go]: https://github.com/Cirru/parser
+Find more at http://cirru.org/
 
 ### Usage
 
