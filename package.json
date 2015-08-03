@@ -1,15 +1,16 @@
 {
   "name": "cirru-parser",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "Parser of Cirru Grammer",
   "main": "./js/parser.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cirru-script test.cirru"
   },
   "author": "jiyinyiyong",
   "license": "MIT",
   "keywords": [
-    "workflow"
+    "cirru",
+    "parser"
   ],
   "devDependencies": {
     "cirru-script": "^0.2.3",
@@ -27,14 +28,15 @@
     "webpack-dev-server": "^1.8.0"
   },
   "dependencies": {
-    "tail-call": "0.0.1"
+    "tail-call": "0.0.1",
+    "textarea-indent": "0.0.2"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mvc-works/webpack-workflow.git"
+    "url": "https://github.com/Cirru/cirru-parser.git"
   },
   "bugs": {
-    "url": "https://github.com/mvc-works/webpack-workflow/issues"
+    "url": "https://github.com/Cirru/cirru-parser/issues"
   },
-  "homepage": "https://github.com/mvc-works/webpack-workflow"
+  "homepage": "https://github.com/Cirru/cirru-parser"
 }

@@ -1,5 +1,6 @@
 
 source_file = "./cirru/demo.cirru"
+indent = require 'textarea-indent'
 
 q = (query) ->
   document.querySelector query
@@ -24,3 +25,5 @@ q("textarea.source").onkeyup = ->
 
 q("textarea.source").onchange = ->
   paint @value
+
+q('textarea.source').addEventListener 'keydown', indent.newlineHandler
