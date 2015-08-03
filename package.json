@@ -1,9 +1,8 @@
 {
   "name": "cirru-parser",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Parser of Cirru Grammer",
   "main": "./js/parser.js",
-  "description": "Web app scaffold based on Webpack",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,13 +19,16 @@
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-cirru-script": "^0.1.1",
+    "gulp-coffee": "^2.3.1",
     "rsyncwrapper": "^0.4.2",
     "run-sequence": "^1.0.2",
     "stir-template": "^0.1.4",
     "webpack": "^1.8.5",
     "webpack-dev-server": "^1.8.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "tail-call": "0.0.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/mvc-works/webpack-workflow.git"

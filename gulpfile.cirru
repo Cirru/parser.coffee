@@ -29,10 +29,11 @@ gulp.task :rsync $ \ (cb)
 gulp.task :script $ \ ()
   var
     script $ require :gulp-cirru-script
+    coffee $ require :gulp-coffee
 
   ... gulp
-    src :src/*.cirru
-    pipe $ script
+    src :src/*.coffee
+    pipe $ coffee $ {} (:bare true)
     pipe $ gulp.dest :lib/
 
 gulp.task :html $ \ (cb)
