@@ -47,7 +47,7 @@ _space_eof = (xs, buffer, state, code) ->
 _token_eof = (xs, buffer, state, code) ->
   buffer.ex = state.x
   buffer.ey = state.y
-  xs = tree.appendBuffer xs, state.level, buffer
+  xs = tree.appendItem xs, state.level, buffer
   buffer = null
   xs
 
@@ -114,7 +114,7 @@ _space_newline = (xs, buffer, state, code) ->
 
 _space_open = (xs, buffer, state, code) ->
   nesting = tree.createNesting(1)
-  xs = tree.appendList xs, state.level, nesting
+  xs = tree.appendItem xs, state.level, nesting
   state.nest += 1
   state.level += 1
   state.x += 1
@@ -154,7 +154,7 @@ _token_space = (xs, buffer, state, code) ->
   state.name = 'space'
   buffer.ex = state.x
   buffer.ey = state.y
-  xs = tree.appendBuffer xs, state.level, buffer
+  xs = tree.appendItem xs, state.level, buffer
   state.x += 1
   buffer = null
   parse xs, buffer, state, code[1..]
@@ -163,7 +163,7 @@ _token_newline = (xs, buffer, state, code) ->
   state.name = 'indent'
   buffer.ex = state.x
   buffer.ey = state.y
-  xs = tree.appendBuffer xs, state.level, buffer
+  xs = tree.appendItem xs, state.level, buffer
   state.indented = 0
   state.x = 1
   state.y += 1
@@ -177,7 +177,7 @@ _token_close = (xs, buffer, state, code) ->
   state.name = 'space'
   buffer.ex = state.x
   buffer.ey = state.y
-  xs = tree.appendBuffer xs, state.level, buffer
+  xs = tree.appendItem xs, state.level, buffer
   buffer = null
   parse xs, buffer, state, code
 
@@ -216,10 +216,10 @@ _indent_else = (xs, buffer, state, code) ->
 
   if diff <= 0
     nesting = tree.createNesting 1
-    xs = tree.appendList xs, (state.level + diff - 1), nesting
+    xs = tree.appendItem xs, (state.level + diff - 1), nesting
   else if diff > 0
     nesting = tree.createNesting diff
-    xs = tree.appendList xs, state.level, nesting
+    xs = tree.appendItem xs, state.level, nesting
 
   state.level += diff
   state.indent = indented
