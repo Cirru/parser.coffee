@@ -16,10 +16,8 @@ npm install --save cirru-parser
 ```coffee
 {parse, pare} = require 'cirru-parser'
 
-syntaxTree = parse code, filename
-simplifiedTree = pare code, filename
-
-info = caution char
+syntaxTree = parse 'code', 'filename' # [{text: 'code', x: 0, y:0, ex: 4, ey: 1}]
+simplifiedTree = pare 'code', 'filename' # ['code']
 ```
 
 * `parse(code, filename)`:
@@ -33,8 +31,8 @@ token =
   text: 'get'
   x: 0
   y: 0
-  ex: 1
-  ey: 1
+  ex: 3
+  ey: 3
   path: 'a.cirru'
 ```
 
@@ -98,18 +96,25 @@ This method was developed in [the Go version][go], you may [check it out here][s
 Run tests:
 
 ```
-gulp test
+cirru-script test.cirru
 ```
 
-Also you may debug `index.html` in a browser after compiling the code:
+Write code:
 
-```
+```bash
 npm i
-gulp start
+gulp html
+webpack-dev-server --hot
 # view generated index.html in a web server
 ```
 
+Read more details https://github.com/mvc-works/webpack-workflow
+
 ### Changelog
+
+### 0.10.5
+
+* introduce `tail-call` to handle recursion
 
 #### 0.10.1
 

@@ -227,9 +227,11 @@ _indent_else = (xs, buffer, state, code) ->
 
 # parse
 
-parse =  (args...) ->
-  [xs, buffer, state, code] = args
-  scope = {code, xs, buffer, state}
+# drop `args...` to bypass stack overflow error in Webpack
+# which is related to `tail-call` `arguemnts` solutions
+parse = (xs, buffer, state, code) ->
+  args = [xs, buffer, state, code]
+  # scope = {code, xs, buffer, state}
   # window.debugData.push (lodash.cloneDeep scope)
   eof = code.length is 0
   char = code[0]
