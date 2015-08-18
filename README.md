@@ -112,10 +112,6 @@ Read more details https://github.com/mvc-works/webpack-workflow
 
 ### Changelog
 
-### 0.10.5
-
-* introduce `tail-call` to handle recursion
-
 #### 0.10.1
 
 * switch to `ex, ey` from `$x, $y`

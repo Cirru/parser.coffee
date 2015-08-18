@@ -1,6 +1,6 @@
 {
   "name": "cirru-parser",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "description": "Cirru Parser in CoffeeScript",
   "main": "./lib/parser.js",
   "scripts": {
@@ -28,9 +28,7 @@
     "webpack": "^1.8.5",
     "webpack-dev-server": "^1.8.0"
   },
-  "dependencies": {
-    "tail-call": "0.0.1"
-  },
+  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/Cirru/cirru-parser.git"
