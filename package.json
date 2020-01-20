@@ -4,6 +4,14 @@
   "description": "Cirru Parser in CoffeeScript",
   "main": "./lib/parser.js",
   "scripts": {
+    "clean": "rm -rfv dist/*",
+    "watch": "yarn html && webpack-dev-server --config webpack.dev.cirru",
+    "release": "yarn clean && webpack --config webpack.release.cirru && yarn release-html",
+    "release-local": "yarn clean && webpack --config webpack.release.cirru && local=true yarn release-html",
+    "html": "cirruscript template.cirru",
+    "release-html": "env=release cirruscript template.cirru",
+    "up": "yarn release && cp -r cirru dist/ && tiye-up",
+    "compile": "coffee -o lib/ -bc src/",
     "test": "cirru-script test.cirru"
   },
   "author": "jiyinyiyong",
@@ -13,28 +21,33 @@
     "parser"
   ],
   "devDependencies": {
-    "cirru-script": "^0.2.3",
-    "cirru-script-loader": "0.1.0",
-    "coffee-loader": "^0.7.2",
-    "coffee-script": "^1.9.3",
-    "del": "^1.1.1",
-    "gulp": "^3.8.11",
-    "gulp-cirru-script": "^0.1.1",
-    "gulp-coffee": "^2.3.1",
-    "rsyncwrapper": "^0.4.2",
-    "run-sequence": "^1.0.2",
-    "stir-template": "^0.1.4",
-    "textarea-indent": "0.0.2",
-    "webpack": "^1.8.5",
-    "webpack-dev-server": "^1.8.0"
+    "assets-webpack-plugin": "^3.9.10",
+    "chalk": "^3.0.0",
+    "cirru-script": "0.6.1-a1",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.5.0",
+    "css-loader": "^3.4.2",
+    "duplicate-package-checker-webpack-plugin": "^3.0.0",
+    "file-loader": "^5.0.2",
+    "hsl": "^0.1.1",
+    "http-server": "^0.12.1",
+    "json-loader": "^0.5.3",
+    "stir-template": "^0.2.2",
+    "style-loader": "^1.1.2",
+    "textarea-indent": "^0.0.2",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1",
+    "webpack-hud": "^0.1.2"
   },
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cirru/cirru-parser.git"
+    "url": "https://github.com/Cirru/parser.coffee.git"
   },
   "bugs": {
-    "url": "https://github.com/Cirru/cirru-parser/issues"
+    "url": "https://github.com/Cirru/parser.coffee/issues"
   },
-  "homepage": "https://github.com/Cirru/cirru-parser"
+  "homepage": "https://github.com/Cirru/parser.coffee"
 }

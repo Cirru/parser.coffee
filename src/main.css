@@ -9,13 +9,14 @@ body {
   position: absolute;
   width: 50%;
   height: 100%;
-  padding: 10px;
+  padding: 10px 10px 100px 10px;
   font-size: 14px;
   font-family: Monaco, monospace;
   background-color: hsl(240,40%,96%);
   border: none;
   resize: none;
   outline: none;
+  white-space: pre;
 }
 .demo:focus {
   background-color: white;

@@ -1,4 +1,6 @@
 
+require './main.css'
+
 source_file = "./cirru/demo.cirru"
 indent = require 'textarea-indent'
 
@@ -17,7 +19,7 @@ req.onload = ->
 paint = (text) ->
   # console.clear()
   res = cirru.pare text, source_file
-  console.log res
+  # console.log res
   q("textarea.target").value = JSON.stringify res, null, 2
 
 q("textarea.source").onkeyup = ->
