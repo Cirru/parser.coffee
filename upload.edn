@@ -1,0 +1,6 @@
+
+{:host "tiye.me"
+ :uploads [{:from "dist/*"
+            :to "cdn/parser.coffee/"}
+           {:from "dist/{index.html,cirru}"
+            :to "repo/Cirru/parser.coffee/"}]}

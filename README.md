@@ -5,11 +5,15 @@ Cirru Parser
 Cirru is an indentation-based grammar.
 You may use it to create your own DSLs or scripting languages.
 
+Demo http://repo.cirru.org/parser.coffee
+
 Find more at http://cirru.org/
 
 ### Usage
 
-```
+![](https://img.shields.io/npm/v/cirru-parser.svg)
+
+```bash
 npm install --save cirru-parser
 ```
 
@@ -63,7 +67,6 @@ A token from `pare` is a string, i.e. the `text` field of parsing results.
 
 ### Live demo
 
-Demo: http://repo.cirru.org/parser/ .
 By typing on the left you should see the `pare` results on the right.
 
 ### Grammar
@@ -102,13 +105,12 @@ cirru-script test.cirru
 Write code:
 
 ```bash
-npm i
-gulp html
-webpack-dev-server --hot
+yarn
+yarn watch
 # view generated index.html in a web server
 ```
 
-Read more details https://github.com/mvc-works/webpack-workflow
+Read more details https://github.com/mvc-works/cirruscript-workflow
 
 ### Changelog
 

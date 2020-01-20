@@ -1,6 +1,7 @@
 
 var
   fs $ require :fs
+  chalk $ require :chalk
   parser $ require :./lib/parser
 
 var names $ []
@@ -26,9 +27,9 @@ var test $ \ (file)
 
   if (is ast wanting)
     do
-      console.log ":ok! fine with:" file
+      console.log $ chalk.gray ":ok! fine with:" file
     do
-      console.log ":failed! with file:" file
+      console.log $ chalk.red ":failed! with file:" file
       console.log ast
   return
 
