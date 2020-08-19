@@ -35,13 +35,16 @@ exports.pare = (code, filename) ->
 
   shorten res
 
+prefixError = (state) ->
+  "#{state.path or "FILE"}(#{state.y}:#{state.x})"
+
 # eof
 
 _escape_eof = (xs, buffer, state, code) ->
-  throw new Error "EOF in escape state"
+  throw new Error "#{prefixError(state)} EOF in escape state"
 
 _string_eof = (xs, buffer, state, code) ->
-  throw new Error "EOF in string state"
+  throw new Error "#{prefixError(state)} EOF in string state"
 
 _space_eof = (xs, buffer, state, code) ->
   xs
@@ -59,7 +62,7 @@ _indent_eof = (xs, buffer, state, code) ->
 # escape
 
 _escape_newline = (xs, buffer, state, code) ->
-  throw new Error 'newline while escape'
+  throw new Error "#{prefixError(state)} newline while escape"
 
 _escape_n = (xs, buffer, state, code) ->
   state.x += 1
@@ -87,7 +90,7 @@ _string_backslash = (xs, buffer, state, code) ->
   [xs, buffer, state, code[1..]]
 
 _string_newline = (xs, buffer, state, code) ->
-  throw new Error 'newline in a string'
+  throw new Error "#{prefixError(state)} newline in a string"
 
 _string_quote = (xs, buffer, state, code) ->
   state.name = 'token'
@@ -126,7 +129,7 @@ _space_close = (xs, buffer, state, code) ->
   state.nest -= 1
   state.level -= 1
   if state.nest < 0
-    throw new Error 'close at space'
+    throw new Error "#{prefixError(state)} close at space"
   state.x += 1
   [xs, buffer, state, code[1..]]
 
@@ -173,7 +176,7 @@ _token_newline = (xs, buffer, state, code) ->
   [xs, buffer, state, code[1..]]
 
 _token_open = (xs, buffer, state, code) ->
-  throw new Error 'open parenthesis in token'
+  throw new Error "#{prefixError(state)} open parenthesis in token"
 
 _token_close = (xs, buffer, state, code) ->
   state.name = 'space'
@@ -207,12 +210,12 @@ _indent_newilne = (xs, buffer, state, code) ->
   [xs, buffer, state, code[1..]]
 
 _indent_close = (xs, buffer, state, code) ->
-  throw new Error 'close parenthesis at indent'
+  throw new Error "#{prefixError(state)} close parenthesis at indent"
 
 _indent_else = (xs, buffer, state, code) ->
   state.name = 'space'
   if (state.indented % 2) is 1
-    throw new Error 'odd indentation'
+    throw new Error "#{prefixError(state)} odd indentation"
   indented = state.indented / 2
   diff = indented - state.indent
 
@@ -238,7 +241,7 @@ parse = (xs, buffer, state, code) ->
     when 'escape'
       if eof      then _escape_eof        args...
       else switch char
-        when '\r'， '\n' then _escape_newline    args...
+        when '\r', '\n' then _escape_newline    args...
         when 'n'  then _escape_n          args...
         when 't'  then _escape_t          args...
         else           _escape_else       args...
@@ -246,14 +249,14 @@ parse = (xs, buffer, state, code) ->
       if eof      then _string_eof        args...
       else switch char
         when '\\' then _string_backslash  args...
-        when '\r'， '\n' then _string_newline    args...
+        when '\r', '\n' then _string_newline    args...
         when '"'  then _string_quote      args...
         else           _string_else       args...
     when 'space'
       if eof      then _space_eof         args...
       else switch char
         when ' '  then _space_space       args...
-        when '\r'， '\n' then _space_newline     args...
+        when '\r', '\n' then _space_newline     args...
         when '('  then _space_open        args...
         when ')'  then _space_close       args...
         when '"'  then _space_quote       args...
@@ -262,7 +265,7 @@ parse = (xs, buffer, state, code) ->
       if eof      then _token_eof         args...
       else switch char
         when ' '  then _token_space       args...
-        when '\r'， '\n' then _token_newline     args...
+        when '\r', '\n' then _token_newline     args...
         when '('  then _token_open        args...
         when ')'  then _token_close       args...
         when '"'  then _token_quote       args...
@@ -271,6 +274,6 @@ parse = (xs, buffer, state, code) ->
       if eof      then _indent_eof        args...
       else switch char
         when ' '  then _indent_space      args...
-        when '\r'， '\n' then _indent_newilne    args...
+        when '\r', '\n' then _indent_newilne    args...
         when ')'  then _indent_close      args...
         else           _indent_else       args...
