@@ -21,15 +21,15 @@ var assets
 case env
   :dev
     = assets $ {}
-      :main $ + :http://localhost :: 8080 :/main.js
+      :main :/main.js
       :style null
   :release
     var assetsJson $ require :./dist/assets
 
-    console.log ":Using CDN url:" (JSON.stringify cdnUrl)
+    -- console.log ":Using CDN url:" (JSON.stringify cdnUrl)
 
     = assets $ {}
-      :main $ + cdnUrl assetsJson.main.js
+      :main assetsJson.main.js
       :style null
 
 console.log ":Assets" assets

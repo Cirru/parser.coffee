@@ -17,10 +17,15 @@ req.onload = ->
   paint req.response
 
 paint = (text) ->
-  # console.clear()
-  res = cirru.pare text, source_file
-  # console.log res
-  q("textarea.target").value = JSON.stringify res, null, 2
+
+  try
+    # console.clear()
+    res = cirru.pare text, source_file
+    # console.log res
+    q("textarea.target").value = JSON.stringify res, null, 2
+  catch err
+    q("textarea.target").value = err.stack
+
 
 q("textarea.source").onkeyup = ->
   paint @value
