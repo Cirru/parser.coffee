@@ -26,10 +26,10 @@ case env
   :release
     var assetsJson $ require :./dist/assets
 
-    console.log ":Using CDN url:" (JSON.stringify cdnUrl)
+    -- console.log ":Using CDN url:" (JSON.stringify cdnUrl)
 
     = assets $ {}
-      :main $ + cdnUrl assetsJson.main.js
+      :main assetsJson.main.js
       :style null
 
 console.log ":Assets" assets
