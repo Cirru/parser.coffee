@@ -21,7 +21,7 @@ var assets
 case env
   :dev
     = assets $ {}
-      :main $ + :http://localhost :: 8080 :/main.js
+      :main :/main.js
       :style null
   :release
     var assetsJson $ require :./dist/assets
