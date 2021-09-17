@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Use Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
 
       - name: Get yarn cache
         id: yarn-cache
@@ -26,7 +26,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - run: yarn && yarn release
+      - run: yarn && yarn compile && yarn test
+
+      - run: rm -rfv dist/* && yarn release
         name: Build web assets
 
       - name: Deploy to server

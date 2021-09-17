@@ -4,15 +4,10 @@
   "description": "Cirru Parser in CoffeeScript",
   "main": "./lib/parser.js",
   "scripts": {
-    "clean": "rm -rfv dist/*",
-    "watch": "yarn html && webpack-dev-server --config webpack.dev.cirru",
-    "release": "yarn clean && webpack --config webpack.release.cirru && yarn release-html",
-    "release-local": "yarn clean && webpack --config webpack.release.cirru && local=true yarn release-html",
-    "html": "cirruscript template.cirru",
-    "release-html": "env=release cirruscript template.cirru",
-    "up": "yarn release && cp -r cirru dist/ && tiye-up",
-    "compile": "coffee -o lib/ -bc src/",
-    "test": "cirruscript test.cirru"
+    "watch": "coffee -wbc -o lib/ src/*",
+    "compile": "coffee -bc -o lib/ src/*",
+    "release": "yarn compile && yarn vite build --base=./ && cp -r ast dist/ && cp -r cirru dist/",
+    "test": "yarn esbuild --bundle --outfile=dist/bundle.js --platform=node lib/test.js && node dist/bundle.js"
   },
   "author": "jiyinyiyong",
   "license": "MIT",
@@ -21,25 +16,11 @@
     "parser"
   ],
   "devDependencies": {
-    "assets-webpack-plugin": "^5.1.1",
-    "chalk": "^4.1.0",
-    "cirru-script": "0.6.2",
-    "coffee-loader": "^1.0.0",
+    "chalk": "^4.1.2",
     "coffeescript": "^2.5.1",
-    "css-loader": "^4.2.1",
-    "duplicate-package-checker-webpack-plugin": "^3.0.0",
-    "file-loader": "^6.0.0",
-    "hsl": "^0.1.1",
-    "http-server": "^0.12.3",
-    "json-loader": "^0.5.3",
-    "stir-template": "^0.2.2",
-    "style-loader": "^1.2.1",
+    "esbuild": "^0.12.28",
     "textarea-indent": "^0.0.2",
-    "url-loader": "^4.1.0",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-hud": "^0.1.2"
+    "vite": "^2.5.8"
   },
   "dependencies": {},
   "repository": {

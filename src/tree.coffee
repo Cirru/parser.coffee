@@ -1,5 +1,5 @@
 
-exports.appendItem = appendItem = (xs, level, buffer) ->
+export appendItem = appendItem = (xs, level, buffer) ->
   if level is 0
     xs.concat [buffer]
   else
@@ -7,7 +7,7 @@ exports.appendItem = appendItem = (xs, level, buffer) ->
     res = appendItem xs[last], (level - 1), buffer
     xs[...-1].concat [res]
 
-exports.createNesting = (n) ->
+export createNesting = (n) ->
   create = (xs, n) ->
     if n <= 1
     then xs
@@ -15,7 +15,7 @@ exports.createNesting = (n) ->
 
   create [], n
 
-exports.resolveDollar = resolveDollar = (xs) ->
+export resolveDollar = resolveDollar = (xs) ->
   if xs.length is 0 then return xs
   repeat = (before, after) ->
     if after.length is 0 then return before
@@ -28,7 +28,7 @@ exports.resolveDollar = resolveDollar = (xs) ->
       repeat (before.concat [cursor]), after[1..]
   repeat [], xs
 
-exports.resolveComma = resolveComma = (xs) ->
+export resolveComma = resolveComma = (xs) ->
   if xs.length is 0 then return xs
   repeat = (before, after) ->
     if after.length is 0 then return before
