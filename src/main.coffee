@@ -1,13 +1,14 @@
 
-require './main.css'
+import '../assets/main.css'
 
 source_file = "./cirru/demo.cirru"
-indent = require 'textarea-indent'
+import indent from 'textarea-indent'
 
 q = (query) ->
   document.querySelector query
 
-cirru = require "./parser"
+import * as cirru from "./parser"
+
 req = new XMLHttpRequest
 req.open "get", source_file
 req.send()
@@ -27,10 +28,12 @@ paint = (text) ->
     q("textarea.target").value = err.stack
 
 
-q("textarea.source").onkeyup = ->
-  paint @value
+window.onload = () ->
 
-q("textarea.source").onchange = ->
-  paint @value
+  q("textarea.source").onkeyup = ->
+    paint @value
 
-q('textarea.source').addEventListener 'keydown', indent.newlineHandler
+  q("textarea.source").onchange = ->
+    paint @value
+
+  q('textarea.source').addEventListener 'keydown', indent.newlineHandler

@@ -1,9 +1,9 @@
 
-tree = require './tree'
+import * as tree from './tree'
 # lodash = require 'lodash'
 # json = require 'cirru-json'
 
-exports.parse = (code, filename) ->
+export parse = (code, filename) ->
   # window.debugData = []
   buffer = null
 
@@ -18,15 +18,15 @@ exports.parse = (code, filename) ->
     path: filename
   xs = []
   while code.length > 0
-    [xs, buffer, state, code] = parse xs, buffer, state, code
-  res = parse xs, buffer, state, code
+    [xs, buffer, state, code] = parseInternal xs, buffer, state, code
+  res = parseInternal xs, buffer, state, code
   res = res.map tree.resolveDollar
   res = res.map tree.resolveComma
   # window.debugData = json.generate window.debugData
   res
 
-exports.pare = (code, filename) ->
-  res = exports.parse code, filename
+export pare = (code, filename) ->
+  res = parse code, filename
 
   shorten = (xs) ->
     if Array.isArray xs
@@ -231,7 +231,7 @@ _indent_else = (xs, buffer, state, code) ->
   [xs, buffer, state, code]
 
 # parse
-parse = (xs, buffer, state, code) ->
+parseInternal = (xs, buffer, state, code) ->
   args = [xs, buffer, state, code]
   # scope = {code, xs, buffer, state}
   # window.debugData.push (lodash.cloneDeep scope)
