@@ -88,7 +88,7 @@ For short, there are then rules of Cirru:
 
 Here's a Gist showing how it's parsed(not including the steps solving `$` and `,`):
 
-https://gist.github.com/jiyinyiyong/bdda3f616ff0f1bea917
+https://gist.github.com/tiye/bdda3f616ff0f1bea917
 
 This method was developed in [the Go version][go], you may [check it out here][sf].
 
