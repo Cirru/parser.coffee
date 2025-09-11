@@ -20,7 +20,7 @@
     "coffeescript": "^2.5.1",
     "esbuild": "^0.25.0",
     "textarea-indent": "^0.0.2",
-    "vite": "^4.5.6"
+    "vite": "^5.4.20"
   },
   "dependencies": {},
   "repository": {
